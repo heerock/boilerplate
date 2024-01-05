@@ -111,7 +111,6 @@ const SideNavContent = (props) => {
   };
 
   useEffect(() => {
-    console.log('routeInfo?.key : ', routeInfo?.key)
     if (routeInfo?.key) setSelectedKey([routeInfo.key]);
     // if (routeInfo?.path) {
     //   setOpenKeySelect(routeInfo.parentMenuArr.filter((ele) => ele !== null));

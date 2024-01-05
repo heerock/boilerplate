@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Col, Row, Radio, Space, Typography, Select, Input, Checkbox } from 'antd';
+import { Col, Row, Radio, Space, Typography, Select, Input, Checkbox, Form } from 'antd';
 import styled from 'styled-components';
 import VendorHotelTable from './VendorHotelTable';
+import DefaultSelect from "../../../../../components/shared-components/hotel/Select/DefaultSelect";
+import DefaultSearch from "../../../../../components/shared-components/hotel/Search/DefaultSearch";
+import DefaultCheckbox from "../../../../../components/shared-components/hotel/Checkbox/DefaultCheckbox";
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -24,35 +27,27 @@ const VendorHotel = (props) => {
 	return (
         <>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                <Row>
-                    <Space wrap>
-                        <Select
-                            defaultValue={null}
-                            options={[
-                            {label: `== 국가 선택 ==`, value: null},
-                            ]}
-                        />
-
-                        <Select
-                            defaultValue={null}
-                            options={[
-                            {label: `== 도시 선택 ==`, value: null},
-                            ]}
-                        />
-                    </Space>
-                </Row>
-
-                <Row gutter={[8, 0]}>
+                <Row gutter={[8, 8]} style={{ padding: '0 0.3rem' }}>
                     <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
-                        <Select
-                        defaultValue={null}
-                        options={[
-                            {label: `공급업체 호텔코드`, value: null},
-                        ]}
+                        <DefaultSelect
+                            width={100}
+                            placeholder={'== 국가 선택 =='}
                         />
                     </Col>
                     <Col xs={18} sm={18} md={18} lg={18} xl={18} xxl={18}>
-                        <Search
+                        <DefaultSelect
+                            placeholder={'== 도시 선택 =='}
+                        />
+                    </Col>
+
+                    <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
+                        <DefaultSelect
+                            width={100}
+                            placeholder={'공급업체 호텔코드'}
+                        />
+                    </Col>
+                    <Col xs={18} sm={18} md={18} lg={18} xl={18} xxl={18}>
+                        <DefaultSearch
                             placeholder="공급처 호텔 정보를 검색해주세요."
                             onSearch={onSearch}
                             style={{
@@ -62,27 +57,23 @@ const VendorHotel = (props) => {
                     </Col>
                 </Row>
 
-                <Row style={{display: 'flex'}}>
-                        <StyleCheckbox
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                    <Form.Item style={{ textAlign: 'left' }}>
+                        <DefaultCheckbox
                             onChange={onChange}
-                        >
-                            <Text>매핑하지 않은 호텔만 보기</Text>
-                        </StyleCheckbox>
-                </Row>
-                <Row>
-                    <VendorHotelTable 
+                            text={'매핑하지 않은 호텔만 보기'}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ padding: '0 0.3rem' }}>
+                    <VendorHotelTable
+                        setSelectedVendorHotelKey={props.setSelectedVendorHotelKey}
                         data={defaultData}
                     />
-                </Row>
+                </Col>
             </Col>
         </>
 	)
 }
-
-export const StyleCheckbox = styled(Checkbox)`
-    .ant-checkbox {
-        top: 0.32rem !important;
-    }
-`
 
 export default VendorHotel

@@ -3,6 +3,7 @@ import { Col, Row, Radio, Table, Typography, Button } from 'antd';
 import styled from 'styled-components';
 import MappingHotel from './MappingHotel';
 import VendorHotelDetailModal from './VendorHotelDetailModal';
+import {StyleCheckbox} from "./VendorHotel";
 
 const { Text } = Typography;
 
@@ -96,24 +97,25 @@ const VendorHotelTable = (props) => {
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            props.setSelectedVendorHotelKey(selectedRows[0])
         },
         getCheckboxProps: (record) => ({
           disabled: record.name === 'Disabled User',
-          // Column configuration not to be checked
           name: record.name,
         }),
     };
 
     useEffect(() => {
         setData(props.data);
-    }, [])
+    }, [props.data])
 
 	return (
 		<>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                <Row>
+                <Row style={{ marginTop: '1rem' }}>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                         <Text>총 {props.data ? props.data.length : 0}개</Text>
+                    </Col>
                 </Row>
                 <Row>
                     <StyleTable
@@ -142,10 +144,6 @@ export const StyleTable = styled(Table)`
         text-align: center;
     }
 `
-// .ant-table-content table {
-//     border: 1px solid #D4D4D4;
-//   }
-
 export const StyleBadgeDiv = styled.div`
   background: ${(props) => props.channel === 'HG' && '#76BEDB'};
   color: #FFF;

@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import Icon from 'components/util-components/Icon';
 import { signOut } from 'redux/actions/Auth';
+import styled from "styled-components";
 
 const menuItem = [
 	{
@@ -74,11 +75,16 @@ export const NavProfile = ({signOut}) => {
     <Dropdown placement="bottomRight" overlay={profileMenu} trigger={["click"]}>
       <Menu className="d-flex align-item-center" mode="horizontal">
         <Menu.Item>
-          <Avatar src={'/img/unknown-avatar.png'} />
+          <StyleAvatar src={'/img/unknown-avatar.png'} />
         </Menu.Item>
       </Menu>
     </Dropdown>
   );
 }
+
+export const StyleAvatar = styled(Avatar)`
+  width: 1.5rem;
+  height: 1.5rem;
+`
 
 export default connect(null, {signOut})(NavProfile)

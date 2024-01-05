@@ -27,16 +27,16 @@ const getLogoWidthGutter = (props, isMobile) => {
 
 const getLogo = (props) => {
   const { navCollapsed, logoType } = props;
-  if(logoType === 'light') {
-    if(navCollapsed) {
-      return '/img/logo-sm-white.png'
-    }
-    return '/img/logo-white.png'
-  }
-
-  if (navCollapsed) {
-    return '/img/logo-sm.png'
-  }
+  // if(logoType === 'light') {
+  //   if(navCollapsed) {
+  //     return '/img/logo-sm-white.png'
+  //   }
+  //   return '/img/logo-white.png'
+  // }
+  //
+  // if (navCollapsed) {
+  //   return '/img/logo-sm.png'
+  // }
   return '/img/logo.png'
 }
 
@@ -54,8 +54,8 @@ export const Logo = (props) => {
     <div
       className={getLogoDisplay(isMobile, props.mobileLogo)} 
       style={{width: `${getLogoWidthGutter(props, isMobile)}`}}>
+      <img style={{width: '16%'}} src={getLogo(props)} alt={`${APP_NAME} logo`}/>
       <TextLogo>호텔모아 운영툴</TextLogo>
-      {/* <img src={getLogo(props)} alt={`${APP_NAME} logo`}/> */}
     </div>
   )
 }
@@ -69,7 +69,7 @@ export const TextLogo = styled(Title)`
   color: #FFF !important;
   margin: 0 auto;
   margin-bottom: 0px !important;
-  font-size: 1.5rem !important;
+  font-size: 1.3rem !important;
 `
 
 export default connect(mapStateToProps)(Logo);

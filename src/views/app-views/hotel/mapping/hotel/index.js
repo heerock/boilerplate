@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Col, Row, Tabs } from 'antd';
 import MappingHotel from './MappingHotel';
+import MappingSetting from "./setting/MappingSetting";
 
 const HotelMapping = () => {
 	const [tabs, setTabs] = useState([
@@ -27,7 +28,7 @@ const HotelMapping = () => {
 				</Col>
 
 				{
-					selectedKey === `HOTEL_MAPPING` ? <MappingHotel /> : <></>
+					selectedKey === `HOTEL_MAPPING` ? <MappingHotel /> : <MappingSetting />
 				}
 			</Row>
 			{/* <Row  gutter={[20, 0]}>

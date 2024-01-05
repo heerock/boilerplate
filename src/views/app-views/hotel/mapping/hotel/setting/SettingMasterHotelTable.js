@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Radio, Table, Typography, Button } from 'antd';
+import { Col, Row, Radio, Table, Typography, Button, Switch } from 'antd';
 import styled from 'styled-components';
-import MappingHotel from './MappingHotel';
-import VendorHotelDetailModal from "./VendorHotelDetailModal";
+import VendorHotelDetailModal from '.././VendorHotelDetailModal';
 
 const { Text } = Typography;
 
-const MasterHotelTable = (props) => {
+const SettingMasterHotelTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedHotelKey, setSelectedHotelKey] = useState(null);
     const detailViewOnClick = (id) => {
@@ -90,17 +89,29 @@ const MasterHotelTable = (props) => {
                 )
             }
         },
+        {
+            title: '판매 유무',
+            dataIndex: 'isSale',
+            align: 'center',
+            render: (_, record) => {
+                return (
+                    <>
+                        <Switch checked={_ === 'Y'}/>
+                    </>
+                )
+            }
+        }
     ])
     const [data, setData] = useState([])
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
         getCheckboxProps: (record) => ({
-          disabled: record.name === 'Disabled User',
-          // Column configuration not to be checked
-          name: record.name,
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
         }),
     };
 
@@ -112,11 +123,11 @@ const MasterHotelTable = (props) => {
         console.log('data : ', data)
     }, [data])
 
-	return (
-		<>
+    return (
+        <>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <Row>
-                        <Text>총 {props.data ? props.data.length : 0}개</Text>
+                    <Text>총 {props.data ? props.data.length : 0}개</Text>
                 </Row>
                 <Row>
                     <StyleTable
@@ -136,8 +147,8 @@ const MasterHotelTable = (props) => {
                 selectedHotelKey={selectedHotelKey}
                 setIsModalOpen={setIsModalOpen}
             />
-		</>
-	)
+        </>
+    )
 }
 
 export const StyleTable = styled(Table)`
@@ -149,9 +160,9 @@ export const StyleTable = styled(Table)`
 
 export const StyleBadgeDiv = styled.div`
   background: ${(props) => {
-      if(props.channel === 'HG') return '#76BEDB';
-      else return '#3E7DB3';
-}};
+    if(props.channel === 'HG') return '#76BEDB';
+    else return '#3E7DB3';
+  }};
   color: #FFF;
   width: auto;
   padding: 2px 5px;
@@ -160,4 +171,10 @@ export const StyleBadgeDiv = styled.div`
   text-align: center;
 `
 
-export default MasterHotelTable
+export const StyleSwitch = styled(Switch)`
+  .ant-switch-checked {
+    background: #58CC4E !important;
+  }
+`
+
+export default SettingMasterHotelTable

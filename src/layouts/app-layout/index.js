@@ -48,7 +48,7 @@ export const AppLayout = ({ navCollapsed, navType, location }) => {
               </Switch>
             </Content>
           </div>
-          <Footer />
+          {/*<Footer />*/}
         </Layout>
       </Layout>
       {isMobile && <MobileNav />}
