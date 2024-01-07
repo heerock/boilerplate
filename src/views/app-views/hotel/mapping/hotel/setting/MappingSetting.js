@@ -5,6 +5,7 @@ import DefaultSelect from '../../../../../../components/shared-components/hotel/
 import DefaultButton from '../../../../../../components/shared-components/hotel/Button/DefaultButton';
 import DefaultSearch from '../../../../../../components/shared-components/hotel/Search/DefaultSearch';
 import SettingMasterHotelTable from './SettingMasterHotelTable';
+import DefaultCheckbox from 'components/shared-components/hotel/Checkbox/DefaultCheckbox';
 const { Text } = Typography;
 const defaultData = [
     { key: '1', masterHotelCode: 'EX12345678', vendorHotelCode: 'HK12345678', channel: 'EXPEDIA', country: 'Japan', cityName: '교토 (Kyoto)', address: 'Karasuma Shijo, Shimogyo-ku 600-8412 Kyoto JP', hotelName: 'KARASUMA KYOTO HOTEL1', tel: '075-371-0111', fax: '075-221-7770', grade: 4, updatedId: 'heerock@teamo2.kr', updatedAt: '2023-12-25 15:48:00', isSale: 'Y'},
@@ -22,6 +23,7 @@ const MappingSetting = (props) => {
         {label: '3km 이내', value: 3},
         {label: '4km 이내', value: 4},
         {label: '5km 이내', value: 5},
+        {label: '5km 이상', value: 0},
     ])
     const [distance, setDistance] = useState(1);
 
@@ -38,14 +40,14 @@ const MappingSetting = (props) => {
             <Row style={{width: `100%`}} gutter={[16, 16]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                     <DefaultSelect
-                       width={20}
-                       placeholder={`=== 국가 선택 ===`}
+                    width={20}
+                    placeholder={`=== 국가 선택 ===`}
                     />
                     <DefaultButton style={{ marginLeft: '5px' }} text={'검색하기'}/>
 
                     <Divider />
                 </Col>
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{display: 'flex'}}>
                     <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                         <Row>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
@@ -106,7 +108,71 @@ const MappingSetting = (props) => {
                     </Col>
 
                     <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                        <Row>
+                            <Col xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
+                                <Form.Item style={{ marginBottom: '0.325rem' }}>
+                                    <DefaultSelect
+                                        width={100}
+                                        placeholder={`== 공급처 선택 선택 ==`}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Form.Item style={{ marginBottom: '10px' }}>
+                                <Space align={`center`}>
+                                    반경거리
+                                    <StyleRadioButton
+                                        options={distanceOptions}
+                                        onChange={onChange}
+                                        value={distance}
+                                        optionType={`button`}
+                                        buttonStyle={`solid`}
+                                    />
+                                </Space>
+                            </Form.Item>
+                        </Row>
+                        <Row>
+                            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                                <Space wrap>
+                                    <Text>호텔명 단어 일치</Text>    
+                                    <DefaultSelect
+                                    placeholder={'== 선택 =='}
+                                    />
+                                </Space>
+                            </Col>
 
+                            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                                <Form.Item style={{ textAlign: 'left', marginBottom: '0.325rem' }}>
+                                    <DefaultCheckbox
+                                        onChange={onChange}
+                                        text={'판매 중인 호텔만 보기'}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={[8, 0]}>
+                            <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
+                                <DefaultSelect
+                                    width={100}
+                                    placeholder={'공급업체 호텔코드'}
+                                />
+                            </Col>
+                            <Col xs={18} sm={18} md={18} lg={18} xl={18} xxl={18}>
+                                <DefaultSearch
+                                    placeholder="공급처 호텔 정보를 검색해주세요."
+                                    // onSearch={}
+                                    style={{
+                                        width: `100%`,
+                                    }}
+                                />
+                            </Col>
+                        </Row>
+                        <Row gutter={[8, 8]} style={{ marginTop: '10px' }}>
+                            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                                <SettingMasterHotelTable data={defaultData}/>
+                            </Col>
+                        </Row>
                     </Col>
 
                 </Col>

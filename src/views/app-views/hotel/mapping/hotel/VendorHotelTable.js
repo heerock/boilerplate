@@ -2,17 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Col, Row, Radio, Table, Typography, Button } from 'antd';
 import styled from 'styled-components';
 import MappingHotel from './MappingHotel';
-import VendorHotelDetailModal from './VendorHotelDetailModal';
+import VendorHotelDetailModal from './modal/VendorHotelDetailModal';
 import {StyleCheckbox} from "./VendorHotel";
+import HotelHistoryModal from './modal/HotelHistoryModal';
 
 const { Text } = Typography;
 
 const VendorHotelTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
     const [selectedHotelKey, setSelectedHotelKey] = useState(null);
     const detailViewOnClick = (id) => {
         setSelectedHotelKey(id)
         setIsModalOpen(!isModalOpen)
+    }
+
+    const historyModalOnClick = () => {
+        setIsHistoryModalOpen(!isHistoryModalOpen);
     }
 
     const [columns, setColumns] = useState([
@@ -85,7 +91,13 @@ const VendorHotelTable = (props) => {
                             {record.updatedAt}        
                         </Row>
                         <Row>
-                            <Button style={{margin: '0 auto'}} type="link">[ 기록보기 ]</Button>
+                            <Button 
+                                style={{margin: '0 auto'}} 
+                                type="link"
+                                onClick={() => historyModalOnClick()}
+                            >
+                                [ 기록보기 ]
+                            </Button>
                         </Row>
                     </Col>
                 </>
@@ -133,6 +145,10 @@ const VendorHotelTable = (props) => {
                 isModalOpen={isModalOpen} 
                 selectedHotelKey={selectedHotelKey}
                 setIsModalOpen={setIsModalOpen}
+            />
+            <HotelHistoryModal 
+                isModalOpen={isHistoryModalOpen}
+                setIsModalOpen={setIsHistoryModalOpen}
             />
 		</>
 	)

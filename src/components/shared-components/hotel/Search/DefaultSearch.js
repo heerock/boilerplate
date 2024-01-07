@@ -26,7 +26,7 @@ export const StyleSearch = styled(Search)`
   button {
     height: 2rem !important;
     border: 1px solid #D4D4D4;
-    border-radius: 0 0.625rem 0.625rem 0 !important;
+    border-radius: 0 0.425rem 0.425rem 0 !important;
   }
 `
 

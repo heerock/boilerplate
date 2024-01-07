@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Col, Row, Radio, Table, Typography, Button } from 'antd';
 import styled from 'styled-components';
 import MappingHotel from './MappingHotel';
-import VendorHotelDetailModal from "./VendorHotelDetailModal";
+import VendorHotelDetailModal from "./modal/VendorHotelDetailModal";
 
 const { Text } = Typography;
 

@@ -55,7 +55,26 @@ const dashBoardNavTree = [{
       submenu: [],
     }
   ]
-}]
+},
+{
+  key: 'carmore',
+  path: '/app/carmore',
+  title: '카모아 차량',
+  icon: DashboardOutlined,
+  breadcrumb: true,
+  submenu: [
+    {
+      key: "CAR_RESERVATION",
+      path: "/app/hotel/mapping/hotel",
+      title: "차량 예약 관리",
+      icon: "",
+      breadcrumb: false,
+      parentkey: 'carmore',
+      submenu: [],
+    },
+  ]
+},
+]
 
 const navigationConfig = [
   ...dashBoardNavTree
