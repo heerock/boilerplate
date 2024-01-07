@@ -19,7 +19,8 @@ const DefaultSelect = (props) => {
             <StyleSelect
                 style={{
                     width: props.width ? `${props.width}%`: 'auto !important',
-                    float: 'left'
+                    float: 'left',
+                    ...props.style
                 }}
                 placeholder={props.placeholder}
                 onChange={onChange}

@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const { Text } = Typography;
 
 const DefaultCheckbox = (props) => {
-
     return (
         <>
             <StyleCheckbox
@@ -22,14 +21,14 @@ const DefaultCheckbox = (props) => {
 export const StyleCheckbox = styled(Checkbox)`
   .ant-checkbox {
     top: 0.42rem !important;
-    float: right !important;
+    float: ${props => props.float || 'right'} !important;
     .ant-checkbox-inner {
       border: 1px solid #d4d4d4;
     }
   }
 
   .ant-checkbox-wrapper {
-    float: right !important;
+    float: ${props => props.float || 'right'} !important;
   }
 `
 

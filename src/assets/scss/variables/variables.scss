@@ -194,8 +194,9 @@ $box-shadow-lg: 0 1rem 3rem rgba($black, 0.175) !default;
 // Border
 //
 // Define border properties
-$border-color: #edf2f9 !default;
-$border-radius: 0.625rem !default;
+// $border-color: #edf2f9 !default;
+$border-color: #d4d4d4 !default;
+$border-radius: 0.425rem !default;
 $border-radius-lg: 0.3rem !default;
 $border-radius-sm: 0.25rem !default;
 $border-radius-xs: 0.125rem !default;
@@ -662,11 +663,13 @@ $table-cell-padding:            .75rem !default;
 $table-sm-cell-padding:         .3rem !default;
 $table-bg:                      transparent !default;
 $table-color:                   $body-color;
-$table-head-bg:                 $white !default;
+// $table-head-bg:                 $white !default;
+$table-head-bg:                 #D8E9F5 !default;
 $table-head-color:              $gray-dark !default;
 $table-foot-bg:                 transparent !default;
 $table-foot-color:              $gray-dark !default;
-$table-border-color:            $gray-lighter !default;
+// $table-border-color:            $gray-lighter !default;
+$table-border-color:            #d4d4d4 !default;
 $table-spacing:                 0.9375rem !default;
 $table-spacing-sm:              0.9375rem !default;
 $table-spacing-lg:              0.9375rem !default;
