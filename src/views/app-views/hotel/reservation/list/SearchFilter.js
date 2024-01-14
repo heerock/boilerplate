@@ -15,13 +15,12 @@ const SearchFilter = () => {
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <Collapse style={{ backgroundColor: '#FFF' }} defaultActiveKey={['']} ghost>
                     <Panel header="검색 조건" key="1" style={{ padding: '1rem !important' }}>
-                        <Divider/>
                         <Row gutter={[8, 8]} style={{ alignItems: 'center' }}>
                             <Col xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}>
                                 <DefaultSelect
                                     placeholder={'예약번호'}
                                     style={{ width: '100%' }}
-                                />
+                                    />
                             </Col>
                             <Col xs={10} sm={10} md={10} lg={10} xl={10} xxl={10}>
                                 <DefaultSearch
@@ -29,9 +28,10 @@ const SearchFilter = () => {
                                     style={{
                                         width: `100%`,
                                     }}
-                                />
+                                    />
                             </Col>
                         </Row>
+                        {/* <Divider/> */}
                         <Row gutter={[8, 8]} style={{ alignItems: 'baseline', marginTop: '0.854rem' }}>
                             <StyleLabel>예약일</StyleLabel>
                             <DatePicker />
@@ -117,7 +117,6 @@ const SearchFilter = () => {
                                 text={'결제취소'}
                             />
                         </Row>
-                        <Divider />
                     </Panel>
                 </Collapse>
             </Col>

@@ -12,11 +12,11 @@ export const AppViews = ({match}) => {
         {/* HotelMore */}
         <Route path={`${match.url}/hotel`} component={lazy(() => import(`./hotel`))} />
         <Route path={`${match.url}/hotel/calculate`} component={lazy(() => import(`./hotel`))} />
-        <Route path={`${match.url}/hotel/mapping/hotel`} component={lazy(() => import(`./hotel`))} />
         <Route path={`${match.url}/hotel/reservation`} component={lazy(() => import(`./hotel`))} />
-        <Route path={`${match.url}/hotel/mapping/room`} component={lazy(() => import(`./hotel`))} />
-        <Route path={`${match.url}/hotel/setting/margin`} component={lazy(() => import(`./hotel`))} />
         <Route path={`${match.url}/hotel/mapping/hotel`} component={lazy(() => import(`./hotel`))} />
+        <Route path={`${match.url}/hotel/mapping/room`} component={lazy(() => import(`./hotel`))} />
+        <Route path={`${match.url}/hotel/mapping/hotel`} component={lazy(() => import(`./hotel`))} />
+        <Route path={`${match.url}/hotel/markup`} component={lazy(() => import(`./hotel`))} />
         <Redirect from={`${match.url}/hotel`} to={`${match.url}/hotel/mapping/hotel`} />
       </Switch>
     </Suspense>

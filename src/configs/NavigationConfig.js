@@ -38,8 +38,8 @@ const dashBoardNavTree = [{
     },
     {
       key: "HOTEL_MARGIN_SETTING",
-      path: "/app/hotel/setting/margin",
-      title: "호텔 마진 설정",
+      path: "/app/hotel/markup",
+      title: "호텔 마크업 관리",
       icon: "",
       breadcrumb: false,
       parentkey: 'hotel',
