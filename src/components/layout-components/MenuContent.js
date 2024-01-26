@@ -9,6 +9,7 @@ import { SIDE_NAV_LIGHT, NAV_TYPE_SIDE } from "constants/ThemeConstant";
 import utils from 'utils'
 import styled from 'styled-components';
 import { onMobileNavToggle } from "redux/actions/Theme";
+import DefaultButton from "../shared-components/hotel/Button/DefaultButton";
 
 const { SubMenu } = Menu;
 const { useBreakpoint } = Grid;
@@ -133,6 +134,18 @@ const SideNavContent = (props) => {
       color={themeColor}
       $navCollapsed={navCollapsed}
     >
+      <DefaultButton
+         style={{
+           margin: '0 auto',
+           width: '90%',
+           border: 'unset',
+           fontWeight: 'bold',
+           fontSize: '0.825rem',
+           marginBottom: '0.6rem',
+           backgroundImage: 'linear-gradient(to bottom, #8dcdfe 0%, #336ebc 100%)'
+         }}
+         text={'카모아 운영툴 바로가기'}
+      />
       {getMenu(navigationConfig)}
     </StyleMenu>
   );
@@ -230,6 +243,14 @@ export const StyleMenu = styled(Menu)`
     margin: 0 auto;
     background: #1F262F;
     border-radius: 10px;
+    .ant-menu-submenu-title {
+      height: 2rem;
+      line-height: 2rem;
+      .ant-menu-title-content {
+        font-size: 0.825rem;
+        height: 1.8rem;
+      }
+    }
   }
 
   .ant-menu-submenu-arrow {
@@ -260,5 +281,11 @@ export const StyleMenu = styled(Menu)`
   .ant-menu-sub.ant-menu-inline > .ant-menu-item {
     height: 1.8rem !important;
     line-height: 1.8rem !important;
+
+    .ant-menu-title-content {
+      span {
+        font-size: 0.785rem;
+      }
+    }
   }
 `;

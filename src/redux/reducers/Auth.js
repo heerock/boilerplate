@@ -1,5 +1,5 @@
 import {
-	AUTH_TOKEN,
+	TOKEN_USER,
 	AUTHENTICATED,
 	SHOW_AUTH_MESSAGE,
 	HIDE_AUTH_MESSAGE,
@@ -15,7 +15,8 @@ const initState = {
   message: '',
   showMessage: false,
   redirect: '',
-  token: localStorage.getItem(AUTH_TOKEN),
+  token: null,
+  user: null,
 }
 
 const auth = (state = initState, action) => {
@@ -25,7 +26,12 @@ const auth = (state = initState, action) => {
 				...state,
 				loading: false,
 				redirect: '/',
-				token: action.token
+				token: action.payload
+			}
+		case TOKEN_USER:
+			return {
+				...state,
+				user: action.payload
 			}
 		case SHOW_AUTH_MESSAGE: 
 			return {

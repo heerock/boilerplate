@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
+import moment from 'moment';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Col, Row, Typography, Calendar, Form, Divider, Collapse, Card, DatePicker, Space, Button, Input, Tag } from 'antd';
 import DefaultCheckbox from 'components/shared-components/hotel/Checkbox/DefaultCheckbox';
@@ -12,7 +13,7 @@ const { RangePicker } = DatePicker;
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
 
-const DateRangeSetting = () => {
+const DateRangeSetting = (props) => {
     const [columns, setColumns] = useState([
         { 
             title: '룸 종류', 
@@ -60,18 +61,51 @@ const DateRangeSetting = () => {
             }
         },
     ])
-
+    const [allChecked, setAllChecked] = useState(false);
     const [data, setData] = useState([
         { key: '1', roomType: '트윈룸', value: 3, status: 'Y'},
     ])
 
-    const [selectedDate, setSelectedDate] = useState([]);
+    const [lastDate, setLastDate] = useState(moment().format('YYYY-MM-DD'));
     const onSelect = (value) => {
-        setSelectedDate([...new Set([...selectedDate, value.format('YYYY-MM-DD')])])
-    }
+        if (
+            moment(lastDate).format('YYYY') === value.format('YYYY') &&
+            moment(lastDate).format('MM') === value.format('MM')
+        ) {
+            props.setSelectedDate([...new Set([...props.selectedDate, value.format('YYYY-MM-DD')].sort((a, b) => a.localeCompare(b)))])
+        }
+        setLastDate(value.format('YYYY-MM-DD'))
+    };
+
+
 
     const onClose = (tag) => {
-        setSelectedDate(selectedDate.filter((date) => date !== tag))
+        props.setSelectedDate(props.selectedDate.filter((date) => date !== tag).sort((a, b) => a.localeCompare(b)))
+    }
+
+    const onClickRangeReset = () => {
+        const days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'];
+
+        setAllChecked(false);
+        days.forEach((day) => props.form.setFieldValue(day, false))
+        props.form.setFieldValue('rangeDate', null);
+    }
+
+    const onClickSelectedDateReset = () => {
+        setLastDate(props.selectedDate[props.selectedDate.length - 1])
+        props.setSelectedDate([])
+    }
+
+    const onChangeAll = (value) => {
+        const checked = value.target.checked;
+        setAllChecked(checked);
+        const days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'];
+
+        if (checked)  {
+            days.forEach((day) => props.form.setFieldValue(day, true))
+        } else {
+            days.forEach((day) => props.form.setFieldValue(day, false))
+        }
     }
 
 	return (
@@ -87,22 +121,22 @@ const DateRangeSetting = () => {
                             <DefaultCard
                                 headStyle={{ background: '#F6F6F6' }}
                                 title={'날짜 범위'}
-                                extra={<><DefaultButton text={'초기화'} /></>}
-                                content={<DateRangeContent />}
+                                extra={<><DefaultButton text={'초기화'} onClick={onClickRangeReset} /></>}
+                                content={<DateRangeContent form={props.form} onChange={onChangeAll} allChecked={allChecked} />}
                             />
                         </Col>
                         <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                             <DefaultCard
                                 headStyle={{ background: '#F6F6F6' }}
                                 title={'날짜 개별 지정'}
-                                extra={<><DefaultButton text={'초기화'} /></>}
+                                extra={<><DefaultButton text={'초기화'} onClick={onClickSelectedDateReset} /></>}
                                 content={
                                     <>
                                         <DateCalendarSetting 
                                             onSelect={onSelect}
-                                            selectedDate={selectedDate}
+                                            setLastDate={setLastDate}
                                         />
-                                        {selectedDate.map((date) => (
+                                        {props.selectedDate.map((date) => (
                                             <>
                                                 <Tag closable onClose={() => onClose(date)}>{date}</Tag>
                                             </>
@@ -125,7 +159,7 @@ const DateRangeSetting = () => {
                                 }
                             />
                         </Col>
-                        <DefaultButton style={{ margin: '0 auto' }} text={`저장하기`}/>
+                        <DefaultButton style={{ margin: '0 auto' }} text={`저장하기`} htmlType={'submit'}/>
                     </Panel>
                 </Collapse>
             </Col>

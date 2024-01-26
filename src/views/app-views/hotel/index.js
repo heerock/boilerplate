@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Loading from 'components/shared-components/Loading';
 

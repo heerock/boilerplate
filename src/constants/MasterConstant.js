@@ -1,0 +1,4 @@
+export const MASTER_FILTER_OPTIONS = {
+    HOTEL_CODE: 'HOTEL_CODE',
+    HOTEL_NAME: 'HOTEL_NAME',
+}

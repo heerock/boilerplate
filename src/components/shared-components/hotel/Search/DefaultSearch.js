@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
 
@@ -17,14 +17,14 @@ const DefaultSearch = (props) => {
 }
 
 export const StyleSearch = styled(Search)`
-  
   .ant-input {
-    height: 2rem !important;
+    font-size: 0.805rem;
+    height: 1.825rem !important;
     border: 1px solid #D4D4D4;
   }
   
   button {
-    height: 2rem !important;
+    height: 1.825rem !important;
     border: 1px solid #D4D4D4;
     border-radius: 0 0.425rem 0.425rem 0 !important;
   }

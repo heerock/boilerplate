@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Radio, Table, Typography, Button, Switch } from 'antd';
+import { Col, Row, Radio, Table, Typography, Popconfirm, Switch } from 'antd';
 import styled from 'styled-components';
 import VendorHotelDetailModal from '../modal/VendorHotelDetailModal';
+import HotelNumberColumn
+    from "../../../../../../components/shared-components/hotel/HotelColumns/HotelNumberColumn";
+import HotelInformationColumn
+    from "../../../../../../components/shared-components/hotel/HotelColumns/HotelInformationColumn";
+import ModifyHistoryColumn
+    from "../../../../../../components/shared-components/hotel/HotelColumns/ModifyHistoryColumn";
+import DefaultTable from "../../../../../../components/shared-components/hotel/Table/DefaultTable";
 
 const { Text } = Typography;
 
@@ -17,25 +24,15 @@ const SettingMasterHotelTable = (props) => {
             title: '마스터 호텔코드',
             dataIndex: 'masterHotelCode',
             align: 'center',
+            width: '20%',
             render: (_, record) => {
                 return (
                     <>
-                        <Col>
-                            <Row>
-                                <StyleBadgeDiv channel={record.channel}>{record.channel}</StyleBadgeDiv>
-                            </Row>
-                            <Row>
-                                <Text style={{margin: '0 auto'}}>{record.masterHotelCode}</Text>
-                            </Row>
-                            <Row>
-                                <Button
-                                    style={{margin: '0 auto'}}
-                                    onClick={() => detailViewOnClick(record.masterHotelCode)}
-                                >
-                                    상세보기
-                                </Button>
-                            </Row>
-                        </Col>
+                        <HotelNumberColumn
+                            channel={record.supplierSystem}
+                            hotelCode={record.hotelCode}
+                            onClick={() => detailViewOnClick(record.hotelCode)}
+                        />
                     </>
                 )
             }
@@ -46,23 +43,9 @@ const SettingMasterHotelTable = (props) => {
             render: (_, record) => {
                 return (
                     <>
-                        <Col>
-                            <Row>
-                                <Text>{`${record.country} > ${record.cityName}`}</Text>
-                            </Row>
-                            <Row>
-                                <Text>{`${record.hotelName}`}</Text>
-                            </Row>
-                            <Row>
-                                <Text>{`T.${record.tel} / F.${record.fax}`}</Text>
-                            </Row>
-                            <Row>
-                                <Text>{record.address}</Text>
-                            </Row>
-                            <Row>
-                                <Text>{`Grade: ${record.grade} STARS`}</Text>
-                            </Row>
-                        </Col>
+                        <>
+                            <HotelInformationColumn record={record}/>
+                        </>
                     </>
                 )
             }
@@ -74,29 +57,27 @@ const SettingMasterHotelTable = (props) => {
             render: (_, record) => {
                 return (
                     <>
-                        <Col style={{display: 'inline-grid'}}>
-                            <Row>
-                                {record.updatedId}
-                            </Row>
-                            <Row>
-                                {record.updatedAt}
-                            </Row>
-                            <Row>
-                                <Button style={{margin: '0 auto'}} type="link">[ 기록보기 ]</Button>
-                            </Row>
-                        </Col>
+                        <ModifyHistoryColumn
+                            record={record}
+                            // onClick={}
+                        />
                     </>
                 )
             }
         },
         {
-            title: '판매 유무',
+            title: '판매 여부',
             dataIndex: 'isSale',
             align: 'center',
+            width: '12%',
             render: (_, record) => {
                 return (
                     <>
-                        <Switch checked={_ === 'Y'}/>
+                        <Popconfirm placement="top" title={'정말로 변경하시겠습니까?'} onConfirm={() => onConfirm(record.key)} okText="Yes" cancelText="No">
+                            <Switch
+                                checked={_ === 'Y'}
+                            />
+                        </Popconfirm>
                     </>
                 )
             }
@@ -104,16 +85,41 @@ const SettingMasterHotelTable = (props) => {
     ])
     const [data, setData] = useState([])
 
+    const onConfirm = (key) => {
+        props.setData((data) => {
+            return data.map((hotel) => {
+                if (hotel.key === key) {
+                    return {
+                        ...hotel,
+                        isSale: hotel.isSale === 'N' ? 'Y' : 'N',
+                    }
+                }
+
+                return hotel;
+            })
+        })
+    }
+
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
-        getCheckboxProps: (record) => ({
-            disabled: record.name === 'Disabled User',
-            // Column configuration not to be checked
-            name: record.name,
-        }),
     };
+
+    const onChangeSwitch = (checked, key) => {
+        props.setData((data) => {
+            return data.map((hotel) => {
+                if (hotel.key === key) {
+                    return {
+                        ...hotel,
+                        isSale: checked ? 'Y' : 'N',
+                    }
+                }
+
+                return hotel;
+            })
+        })
+    }
 
     useEffect(() => {
         setData(props.data);
@@ -126,18 +132,17 @@ const SettingMasterHotelTable = (props) => {
     return (
         <>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                <Row>
-                    <Text>총 {props.data ? props.data.length : 0}개</Text>
-                </Row>
-                <Row>
-                    <StyleTable
+                <Row style={{ marginTop: '10px' }}>
+                    <DefaultTable
+                        totalCount={data.length}
                         rowSelection={{
                             type: `radio`,
+                            hideSelectAll: true,
                             ...rowSelection,
                         }}
-                        pagination={false}
+                        isPagination={false}
                         columns={columns}
-                        dataSource={data && data}
+                        data={data && data}
                         style={{ width: `100%`}}
                     />
                 </Row>
@@ -150,31 +155,5 @@ const SettingMasterHotelTable = (props) => {
         </>
     )
 }
-
-export const StyleTable = styled(Table)`
-    .ant-table-thead > tr > th {
-        background: #D8E9F5 !important;
-        text-align: center;
-    }
-`
-
-export const StyleBadgeDiv = styled.div`
-  background: ${(props) => {
-    if(props.channel === 'HG') return '#76BEDB';
-    else return '#3E7DB3';
-  }};
-  color: #FFF;
-  width: auto;
-  padding: 2px 5px;
-  margin: 0 auto;
-  border-radius: 5px;
-  text-align: center;
-`
-
-export const StyleSwitch = styled(Switch)`
-  .ant-switch-checked {
-    background: #58CC4E !important;
-  }
-`
 
 export default SettingMasterHotelTable

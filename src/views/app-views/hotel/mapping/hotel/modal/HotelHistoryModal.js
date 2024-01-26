@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Input, Modal, Typography, Card, Descriptions } from 'antd';
+import { Col, Row, Input, Modal, Typography, Card, Spin } from 'antd';
 import styled from 'styled-components';
 import HotelHistoryTable from '../table/HotelHistoryTable';
+import LogService from "../../../../../../services/Log/LogService";
+import {LoadingOutlined} from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -13,6 +15,8 @@ const defaultData = [
 const HotelHistoryModal = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [type, setType] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
 
     const handleOk = () => {
         setIsModalOpen(false);
@@ -21,6 +25,23 @@ const HotelHistoryModal = (props) => {
     const handleCancel = () => {
     setIsModalOpen(false);
     };
+
+    const getFetch = (record) => {
+        setLoading(true)
+        Promise.allSettled([findLog(record)]).then(() => setLoading(false))
+    }
+
+    const findLog = async (record) => {
+        let channel = null;
+        if ('supplierSystem' in record) {
+            channel = record.supplierSystem;
+        } else if ('masterSystem' in record) {
+            channel = record.masterSystem;
+        }
+
+        const response = await LogService.findByHotelId(record.id, { sourceSystem: channel })
+        setData(response.logs)
+    }
 
     useEffect(() => {
         setIsModalOpen(props.isModalOpen);
@@ -34,6 +55,12 @@ const HotelHistoryModal = (props) => {
         setType(props.type === 'MASTER' ? '마스터' : '공급처')
     }, [props.type])
 
+    useEffect(() => {
+        if (props.selectedRecord) {
+            getFetch(props.selectedRecord)
+        }
+    }, [props.selectedRecord])
+
 	return (
         <>
             <StyleModal
@@ -42,12 +69,31 @@ const HotelHistoryModal = (props) => {
                 open={isModalOpen}
                 onOk={handleOk} 
                 onCancel={handleCancel}
-                footer={<></>}
+                footer={null}
 
             >
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                    <HotelHistoryTable data={defaultData} />
-                </Col>
+                <Spin
+                    style={{
+                        position: 'fixed',
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                    spinning={loading}
+                    tip={'로딩중..'}
+                    indicator={
+                        <LoadingOutlined
+                            style={{
+                                fontSize: '4rem',
+                            }}
+                            spin
+                        />
+                    }
+                >
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                        <HotelHistoryTable data={data} />
+                    </Col>
+                </Spin>
             </StyleModal>
         </>
 	)

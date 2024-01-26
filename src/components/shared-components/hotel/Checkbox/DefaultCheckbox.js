@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Checkbox, Typography } from 'antd';
 import styled from 'styled-components';
 
@@ -7,13 +7,25 @@ const { Text } = Typography;
 const DefaultCheckbox = (props) => {
     return (
         <>
-            <StyleCheckbox
-                placeholder={props.placeholder}
-                onChange={props.onChange}
-                style={{ textAlign: 'left', display: 'inline-block' }}
-            >
-                <Text>{props.text}</Text>
-            </StyleCheckbox>
+            {
+                props.checked ?
+                <StyleCheckbox
+                    placeholder={props.placeholder}
+                    onChange={props.onChange}
+                    checked={props.checked || false}
+                    style={{ textAlign: 'left', display: 'inline-block' }}
+                >
+                    <Text>{props.text}</Text>
+                </StyleCheckbox>
+                :
+                <StyleCheckbox
+                    placeholder={props.placeholder}
+                    onChange={props.onChange}
+                    style={{ textAlign: 'left', display: 'inline-block' }}
+                >
+                    <Text>{props.text}</Text>
+                </StyleCheckbox>
+            }
         </>
     )
 }

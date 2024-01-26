@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import DefaultCheckbox from 'components/shared-components/hotel/Checkbox/DefaultCheckbox';
 import DefaultSelect from 'components/shared-components/hotel/Select/DefaultSelect';
 import DefaultSearch from 'components/shared-components/hotel/Search/DefaultSearch';
+import DefaultDatePicker from "../../../../../components/shared-components/hotel/DatePicker/DefaultDatePicker";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -34,18 +35,18 @@ const SearchFilter = () => {
                         {/* <Divider/> */}
                         <Row gutter={[8, 8]} style={{ alignItems: 'baseline', marginTop: '0.854rem' }}>
                             <StyleLabel>예약일</StyleLabel>
-                            <DatePicker />
+                            <DefaultDatePicker />
 
                             <StyleLabel style={{marginLeft: '1.5rem'}}>취소일</StyleLabel>
-                            <DatePicker />
+                            <DefaultDatePicker />
 
                         </Row>
                         <Row gutter={[8, 8]} style={{ alignItems: 'baseline', marginTop: '0.454rem' }}>
                             <StyleLabel>투숙일</StyleLabel>
                             <Space>
-                                <DatePicker />
+                                <DefaultDatePicker />
                                 <Text>~</Text>
-                                <DatePicker />
+                                <DefaultDatePicker />
                             </Space>
                         </Row>
                         <Row gutter={[8, 8]} style={{ alignItems: 'baseline', marginTop: '0.454rem' }}>

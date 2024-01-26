@@ -1,30 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Radio, Table, Typography, Button } from 'antd';
 import styled from 'styled-components';
+import moment from 'moment';
 
 const { Text } = Typography;
 
 const HotelHistoryTable = (props) => {
     const [columns, setColumns] = useState([
-        { 
-          title: '번호', 
-          dataIndex: 'seq',
-          align: 'center',
-          render: (number) => {
-            return (
-                <>
-                    <Text style={{margin: '0 auto'}}>{number}</Text>
-                </>
-            )
-          }
-        },
-        { 
+        {
           title: '분류', 
-          dataIndex: 'historyType',
-          render: (type, record) => {
+          dataIndex: 'category',
+          align: 'center',
+          render: (category) => {
+            const categoryEnum = {
+                MAPPING: '매핑',
+                MODIFY: '수정',
+                SALE: '판매'
+            }
+
             return (
                 <>
-                    <Text>{type}</Text>
+                    <Text>{categoryEnum[category]}</Text>
                 </>
             )
           }
@@ -36,62 +32,55 @@ const HotelHistoryTable = (props) => {
           render: (status) => {
             return (
                 <>
-                    <Text>{status}</Text>
+                    <Text>{status ? 'Y' : 'N'}</Text>
                 </>
             )
           }
         },
-        { 
-            title: '업체', 
-            dataIndex: 'vendor',
-            render: (vendor, record) => {
+        {
+            title: '호텔 코드',
+            dataIndex: 'mappedHotel',
+            align: 'center',
+            render: (mappedHotel, record) => {
               return (
                   <>
-                      <Text>{vendor}</Text>
-                  </>
-              )
-            }
-        },
-        { 
-            title: '호텔 코드', 
-            dataIndex: 'hotelCode',
-            render: (code, record) => {
-              return (
-                  <>
-                      <Text>{code}</Text>
+                      <Text>{mappedHotel?.hotelCode}</Text>
                   </>
               )
             }
         },
         { 
             title: '호텔명', 
-            dataIndex: 'hotelName',
-            render: (name, record) => {
+            dataIndex: 'mappedHotel',
+            align: 'center',
+            render: (mappedHotel, record) => {
               return (
                   <>
-                      <Text>{name}</Text>
+                      <Text>{mappedHotel?.hotelName}</Text>
                   </>
               )
             }
         },
         { 
             title: '수정자', 
-            dataIndex: 'updatedUser',
-            render: (user, record) => {
+            dataIndex: 'adminEmail',
+            align: 'center',
+            render: (adminEmail, record) => {
               return (
                   <>
-                      <Text>{user}</Text>
+                      <Text>{adminEmail}</Text>
                   </>
               )
             }
         },
         { 
             title: '수정일', 
-            dataIndex: 'updatedAt',
-            render: (date, record) => {
+            dataIndex: 'createdAt',
+            align: 'center',
+            render: (createdAt, record) => {
               return (
                   <>
-                      <Text>{date}</Text>
+                      <Text>{moment(createdAt).add(9, 'hours').format('YYYY-MM-DD HH:mm:ss')}</Text>
                   </>
               )
             }
@@ -100,6 +89,7 @@ const HotelHistoryTable = (props) => {
     const [data, setData] = useState([])
 
     useEffect(() => {
+        console.log('props : ', props.data)
         setData(props.data);
     }, [props.data])
 

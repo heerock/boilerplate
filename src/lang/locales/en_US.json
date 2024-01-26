@@ -1,3 +1,11 @@
 {
-	"home": "Home"
+	"home": "Home",
+	"hotel": "카모아 호텔",
+	"HOTEL_MAPPING": "호텔 매핑 관리",
+	"HOTEL_RESERVATION": "호텔 예약 관리",
+	"HOTEL_MARKUP_SETTING": "호텔 마크업 관리",
+	"carmore": "카모아 차량",
+	"CAR_RESERVATION": "차량 예약 관리",
+	"QA": "QA",
+	"QA_HOTEL_DATE_CHANGE": "호텔 예약 변경"
 }

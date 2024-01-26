@@ -1,8 +1,8 @@
 import { SIDE_NAV_LIGHT, NAV_TYPE_SIDE } from 'constants/ThemeConstant';
-import { env } from './EnvironmentConfig'
+import { HOTEL_HOST } from './HostConfig';
 
 export const APP_NAME = 'HotelMore Admin';
-export const API_BASE_URL = env.API_ENDPOINT_URL
+export const API_BASE_URL = HOTEL_HOST;
 
 export const THEME_CONFIG = {
 	navCollapsed: false,
