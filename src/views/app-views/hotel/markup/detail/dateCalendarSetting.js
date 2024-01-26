@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Calendar, Select, Row, Col, Radio, Typography } from 'antd';
+import React from 'react';
+import { Calendar, Select, Row, Col } from 'antd';
 
 const DateCalendarSetting = (props) => {
 
@@ -64,6 +64,7 @@ const DateCalendarSetting = (props) => {
                                   value={year}
                                   onChange={(newYear) => {
                                     const now = value.clone().year(newYear);
+                                    props.setLastDate(now);
                                     onChange(now);
                                   }}
                                 >
@@ -77,6 +78,7 @@ const DateCalendarSetting = (props) => {
                                   value={month}
                                   onChange={(newMonth) => {
                                     const now = value.clone().month(newMonth);
+                                    props.setLastDate(now);
                                     onChange(now);
                                   }}
                                 >

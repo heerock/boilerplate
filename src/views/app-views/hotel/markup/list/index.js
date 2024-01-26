@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Col, Input, Row, Space, Typography } from 'antd';
+import styled from 'styled-components';
+
 import PageHeader from 'components/shared-components/PageHeader/PageHeader';
 import SearchFilter from './SearchFilter';
 import DefaultTable from 'components/shared-components/hotel/Table/DefaultTable';
 import DefaultButton from 'components/shared-components/hotel/Button/DefaultButton';
-import { StyleBadgeDiv } from '../../mapping/hotel/VendorHotelTable';
 import HotelHistoryModal from '../../mapping/hotel/modal/HotelHistoryModal';
 import VendorHotelDetailModal from '../../mapping/hotel/modal/VendorHotelDetailModal';
 
@@ -174,5 +175,15 @@ const MarkupList = () => {
 		</>
 	)
 }
+
+
+export const StyleBadgeDiv = styled.div`
+  background: ${(props) => props.channel === 'HG' && '#76BEDB'};
+  color: #FFF;
+  width: 30%;
+  margin: 0 auto;
+  border-radius: 5px;
+  text-align: center;
+`
 
 export default MarkupList

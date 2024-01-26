@@ -3,10 +3,12 @@ import { Col, Row, Typography } from 'antd';
 import PageHeader from 'components/shared-components/PageHeader/PageHeader';
 import SearchFilter from './SearchFilter';
 import ReservationListTable from './ReservationListTable';
+import { ReservationDermy } from './dermy/ReservationDermy';
 
 const { Text } = Typography;
 
 const ReservationList = () => {
+    const [data, setData] = useState(ReservationDermy);
 
 	return (
 		<>
@@ -19,7 +21,7 @@ const ReservationList = () => {
                         <SearchFilter />
                     </Row>
                     <Row gutter={[8, 8]} style={{ marginTop: '1.825rem' }}>
-                        <ReservationListTable />
+                        <ReservationListTable data={data}/>
                     </Row>
 				</Col>
 			</Row>

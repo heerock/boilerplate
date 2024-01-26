@@ -28,16 +28,7 @@ const dashBoardNavTree = [{
       submenu: [],
     },
     {
-      key: "HOTEL_ROOM_MAPPING",
-      path: "/app/hotel/mapping/room",
-      title: "호텔 룸매핑 관리",
-      icon: "",
-      breadcrumb: false,
-      parentkey: 'hotel',
-      submenu: [],
-    },
-    {
-      key: "HOTEL_MARGIN_SETTING",
+      key: "HOTEL_MARKUP_SETTING",
       path: "/app/hotel/markup",
       title: "호텔 마크업 관리",
       icon: "",
@@ -45,15 +36,6 @@ const dashBoardNavTree = [{
       parentkey: 'hotel',
       submenu: [],
     },
-    {
-      key: "HOTEL_CALCULATE",
-      path: "/app/hotel/calculate",
-      title: "호텔 정산",
-      icon: "",
-      breadcrumb: false,
-      parentkey: 'hotel',
-      submenu: [],
-    }
   ]
 },
 {
@@ -70,6 +52,24 @@ const dashBoardNavTree = [{
       icon: "",
       breadcrumb: false,
       parentkey: 'carmore',
+      submenu: [],
+    },
+  ]
+},
+{
+  key: 'QA',
+  path: '/app/qa',
+  title: 'QA',
+  icon: DashboardOutlined,
+  breadcrumb: true,
+  submenu: [
+    {
+      key: "QA_HOTEL_DATE_CHANGE",
+      path: "/app/hotel/mapping/hotel",
+      title: "호텔 예약 변경",
+      icon: "",
+      breadcrumb: false,
+      parentkey: 'QA',
       submenu: [],
     },
   ]

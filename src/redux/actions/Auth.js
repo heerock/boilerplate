@@ -11,7 +11,8 @@ import {
   SIGNIN_WITH_GOOGLE,
   SIGNIN_WITH_GOOGLE_AUTHENTICATED,
   SIGNIN_WITH_FACEBOOK,
-  SIGNIN_WITH_FACEBOOK_AUTHENTICATED
+  SIGNIN_WITH_FACEBOOK_AUTHENTICATED,
+  TOKEN_USER
 } from '../constants/Auth';
 
 export const signIn = (user) => {
@@ -21,10 +22,17 @@ export const signIn = (user) => {
   }
 };
 
+export const tokenUser = (user) => {
+  return {
+    type: TOKEN_USER,
+    payload: user
+  }
+}
+
 export const authenticated = (token) => {
   return {
     type: AUTHENTICATED,
-    token
+    payload: token
   }
 };
 
