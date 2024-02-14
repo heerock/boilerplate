@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Layout, Grid } from 'antd';
-import { Switch, Route, withRouter, useHistory } from "react-router-dom";
+import { Switch, Route, withRouter, useHistory, useParams } from "react-router-dom";
 import { connect, useDispatch, useSelector } from 'react-redux';
 import cookie from 'react-cookies';
 import jwt from 'jsonwebtoken';
@@ -33,6 +33,7 @@ export const AppLayout = ({ navCollapsed, navType, location }) => {
   const currentRouteInfo = utils.getRouteInfo(navigationConfig, location.pathname)
   const history = useHistory();
   const dispatch = useDispatch();
+  const params = useParams();
   const screens = utils.getBreakPoint(useBreakpoint());
   const isMobile = !screens.includes('lg')
   const isNavSide = navType === NAV_TYPE_SIDE
@@ -40,12 +41,13 @@ export const AppLayout = ({ navCollapsed, navType, location }) => {
 
   const loginPage = () => {
     localStorage.removeItem('token');
+    console.log('ADMIN_HOST : ', ADMIN_HOST)
     window.location.href = `${ADMIN_HOST}/adminmanage/Login`;
     return false;
   }
 
   const validateToken = (token) => {
-    const decodedToken = jwt.decode(token, process.env.SECRET_KEY)
+    const decodedToken = jwt.decode(token, process.env.REACT_APP_SECRET_KEY)
     const now = parseInt(new Date().getTime() / 1000)
 
     if (decodedToken.exp < now) {
@@ -60,6 +62,11 @@ export const AppLayout = ({ navCollapsed, navType, location }) => {
   }
 
   useEffect(() => {
+    if (location.pathname.includes('token')) {
+      const token = location.pathname.split('/')[3]
+      cookie.save('token', token)
+    }
+
     const cookieToken = cookie.load('token')
     const localStorageToken = localStorage.getItem('token');
 

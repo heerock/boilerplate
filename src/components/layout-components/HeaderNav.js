@@ -59,7 +59,7 @@ export const HeaderNav = props => {
           </div>
           <div className="nav-right">
             <NavProfile />
-            <NavPanel />
+            {/*<NavPanel />*/}
           </div>
           {/* <NavSearch active={searchActive} close={onSearchClose}/> */}
         </div>

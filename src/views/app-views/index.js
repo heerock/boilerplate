@@ -8,7 +8,11 @@ export const AppViews = ({match}) => {
       <Switch>
         {/* <Route path={`${match.url}/home`} component={lazy(() => import(`./home`))} />
         <Redirect from={`${match.url}`} to={`${match.url}/home`} /> */}
-
+        <Route path={`${match.url}/token`} component={lazy(() => import(`./token`))} />
+        {/* QA */}
+        <Route path={`${match.url}/qa/hotel/reservation`} component={lazy(() => import(`./qa/hotelReservation`))} />
+        <Route path={`${match.url}/qa`} component={lazy(() => import(`./qa`))} />
+        {/*<Redirect from={`${match.url}/qa`} to={`${match.url}/qa/hotelReservation`} />*/}
         {/* HotelMore */}
         <Route path={`${match.url}/hotel`} component={lazy(() => import(`./hotel`))} />
         <Route path={`${match.url}/hotel/calculate`} component={lazy(() => import(`./hotel`))} />

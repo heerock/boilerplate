@@ -1,7 +1,7 @@
 import { env } from './EnvironmentConfig';
 
 const HOST = {
-    ADMIN: { dev: 'http://localhost', prod: '', stg: '' },
+    ADMIN: { dev: 'https://dev-admin.carmore.kr', prod: 'https://admin.carmore.kr', stg: '' },
     COMMON: { dev: 'https://dev-common-api.carmore.kr', prod: '', stg: '' },
     CARMORE: { dev: 'https://dev.carmore.kr', prod: '', stg: '' },
     HOTEL: { dev: 'https://dev-api.hotelmore.kr', prod: '', stg: '' }

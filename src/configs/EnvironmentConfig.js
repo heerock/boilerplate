@@ -1,5 +1,5 @@
 const getEnv = () => {
-	switch (process.env.NODE_ENV) {
+	switch (process.env.REACT_APP_NODE_ENV) {
 		case 'development':
 			return 'dev'
 		case 'production':

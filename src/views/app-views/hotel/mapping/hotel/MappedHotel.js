@@ -40,7 +40,7 @@ const MappedHotel = (props) => {
                     bodyStyle={{ padding: '1.05rem 1.25rem'}}
                     headStyle={{ background: '#F9F9F9', color: '#666666', fontSize: '0.825rem' }}
                 >
-                    {props.mappedHotel ? <MappedCard mappedHotel={props.mappedHotel} /> :
+                    {props.mappedHotel ? <MappedCard mappedHotel={props.mappedHotel} selectedVendorHotelKey={props.selectedVendorHotelKey} /> :
                         <>
                             <Empty
                                 image={Empty.PRESENTED_IMAGE_SIMPLE}

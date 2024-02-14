@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Col, Row, Tabs, typo, Typography } from 'antd';
 import DefaultTextArea from '../../../../../../../components/shared-components/hotel/Input/DefaultTextArea';
-import { StyleCard } from '../VendorHotelDetailModal';
+import { StyleCard } from '../HotelDetailModal';
 
 const { Text, Title } = Typography;
 const HotelImportantInformation = (props) => {

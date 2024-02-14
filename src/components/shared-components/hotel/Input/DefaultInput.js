@@ -10,7 +10,7 @@ const DefaultInput = (props) => {
                 placeholder={props.placeholder}
                 value={props.value}
                 onChange={props.onChange}
-                style={{ textAlign: 'left', display: 'inline-block' }}
+                style={{ ...props.style, textAlign: 'left', display: 'inline-block' }}
             />
         </>
     )

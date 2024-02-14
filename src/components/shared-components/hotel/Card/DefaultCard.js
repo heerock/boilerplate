@@ -9,6 +9,7 @@ const DefaultCard = (props) => {
             <StyleCard
                 title={props.title || ''}
                 extra={props.extra || null}
+                style={props?.style}
             >
                 {props?.content && props.content}
             </StyleCard>

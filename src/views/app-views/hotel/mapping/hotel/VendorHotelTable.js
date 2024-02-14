@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Radio, Table, Typography, Button } from 'antd';
 import styled from 'styled-components';
-import VendorHotelDetailModal from './modal/VendorHotelDetailModal';
+import HotelDetailModal from './modal/HotelDetailModal';
 import HotelHistoryModal from './modal/HotelHistoryModal';
 import HotelNumberColumn
     from '../../../../../components/shared-components/hotel/HotelColumns/HotelNumberColumn';
@@ -17,11 +17,11 @@ const VendorHotelTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState(null);
-    const [selectedHotelKey, setSelectedHotelKey] = useState(null);
+    const [selectedDetailRecord, setSelectedDetailRecord] = useState(null);
 
 
-    const detailViewOnClick = (id) => {
-        setSelectedHotelKey(id)
+    const detailViewOnClick = (record) => {
+        setSelectedDetailRecord(record)
         setIsModalOpen(!isModalOpen)
     }
 
@@ -43,7 +43,7 @@ const VendorHotelTable = (props) => {
                         channel={record?.supplierSystem}
                         isSelfSale={record.isSelfSale}
                         hotelCode={record.code}
-                        onClick={() => detailViewOnClick(record.id)}
+                        onClick={() => detailViewOnClick(record)}
                     />
                 </>
             )
@@ -115,10 +115,11 @@ const VendorHotelTable = (props) => {
                     />
                 </Row>
             </Col>
-            <VendorHotelDetailModal 
-                isModalOpen={isModalOpen} 
-                selectedHotelKey={selectedHotelKey}
+            <HotelDetailModal
+                isModalOpen={isModalOpen}
+                selectedDetailRecord={selectedDetailRecord}
                 setIsModalOpen={setIsModalOpen}
+                type={'VENDOR'}
             />
             <HotelHistoryModal 
                 isModalOpen={isHistoryModalOpen}

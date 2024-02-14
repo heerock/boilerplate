@@ -10,13 +10,21 @@ const HotelInformationColumn = (props) => {
 
     return (
         <>
+
             <Col style={{ textAlign: 'left' }}>
+                {
+                    record?.similarityScore &&
+                    <Col style={{ fontSize: '0.765rem', marginBottom: '0.225rem' }}>
+                        <Text style={{ color: '#6C757D', marginRight: '0.275rem' }}>유사도 점수</Text><Text style={{ color: '#6C757D' }}>{record?.similarityScore}</Text>
+                    </Col>
+                }
                 {
                     record?.mappedSupplierSystems &&
                         <Row gutter={[8, 8]}>
                             {
                                 record.mappedSupplierSystems.map((vendor) =>
                                     <AffiliatesBadgeDiv
+                                        key={vendor}
                                         style={{
                                             margin: 'unset',
                                             marginRight: '4px',

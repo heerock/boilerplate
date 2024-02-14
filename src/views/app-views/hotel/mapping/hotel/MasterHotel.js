@@ -104,7 +104,13 @@ const MasterHotel = (props) => {
     useEffect(() => {
         if (params?.supplierHotelId) {
             setLoading(true)
-            Promise.allSettled([getFetch(params)]).then(() => setLoading(false))
+
+            Promise.allSettled([
+                getFetch({
+                    ...params,
+                    minSimilarityScore: props.minSimilarityScore
+                })
+            ]).then(() => setLoading(false))
         }
     }, [params])
 

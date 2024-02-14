@@ -25,6 +25,8 @@ service.interceptors.request.use(config => {
 	window.location.href = `${ADMIN_HOST}/adminmanage/Login`;
   }
 
+  // config.withCredentials = true;
+
   return config
 }, error => {
 	notification.error({

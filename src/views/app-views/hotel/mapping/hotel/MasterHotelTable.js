@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons';
 import styled from 'styled-components';
 import MappingHotel from './MappingHotel';
-import VendorHotelDetailModal from "./modal/VendorHotelDetailModal";
+import HotelDetailModal from "./modal/HotelDetailModal";
 import DefaultButton from "../../../../../components/shared-components/hotel/Button/DefaultButton";
 import AffiliatesBadgeDiv from "../../../../../components/shared-components/hotel/Div/AffiliatesBadgeDiv";
 import HotelNumberColumn
@@ -23,9 +23,9 @@ const MasterHotelTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState(null);
-    const [selectedHotelKey, setSelectedHotelKey] = useState(null);
-    const detailViewOnClick = (id) => {
-        setSelectedHotelKey(id)
+    const [selectedDetailRecord, setSelectedDetailRecord] = useState(null);
+    const detailViewOnClick = (record) => {
+        setSelectedDetailRecord(record)
         setIsModalOpen(!isModalOpen)
     }
 
@@ -46,7 +46,7 @@ const MasterHotelTable = (props) => {
                         <HotelNumberColumn
                             channel={record?.masterSystem}
                             hotelCode={record.code}
-                            onClick={() => detailViewOnClick(record.id)}
+                            onClick={() => detailViewOnClick(record)}
                         />
                     </>
                 )
@@ -189,10 +189,11 @@ const MasterHotelTable = (props) => {
                     />
                 </Row>
             </Col>
-            <VendorHotelDetailModal
+            <HotelDetailModal
                 isModalOpen={isModalOpen}
-                selectedHotelKey={selectedHotelKey}
+                selectedDetailRecord={selectedDetailRecord}
                 setIsModalOpen={setIsModalOpen}
+                type={'MASTER'}
             />
             <HotelHistoryModal
                 isModalOpen={isHistoryModalOpen}

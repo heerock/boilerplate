@@ -65,7 +65,7 @@ const dashBoardNavTree = [{
   submenu: [
     {
       key: "QA_HOTEL_DATE_CHANGE",
-      path: "/app/hotel/mapping/hotel",
+      path: "/app/qa/hotel/reservation",
       title: "호텔 예약 변경",
       icon: "",
       breadcrumb: false,

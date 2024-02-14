@@ -7,7 +7,7 @@ import SearchFilter from './SearchFilter';
 import DefaultTable from 'components/shared-components/hotel/Table/DefaultTable';
 import DefaultButton from 'components/shared-components/hotel/Button/DefaultButton';
 import HotelHistoryModal from '../../mapping/hotel/modal/HotelHistoryModal';
-import VendorHotelDetailModal from '../../mapping/hotel/modal/VendorHotelDetailModal';
+import HotelDetailModal from '../../mapping/hotel/modal/HotelDetailModal';
 
 const { Text } = Typography;
 
@@ -163,7 +163,7 @@ const MarkupList = () => {
 				</Col>
 			</Row>
 
-            <VendorHotelDetailModal 
+            <HotelDetailModal
                 isModalOpen={isModalOpen} 
                 selectedHotelKey={selectedHotelKey}
                 setIsModalOpen={setIsModalOpen}

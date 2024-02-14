@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Radio, Table, Typography, Popconfirm, Switch } from 'antd';
 import styled from 'styled-components';
-import VendorHotelDetailModal from '../modal/VendorHotelDetailModal';
+import HotelDetailModal from '../modal/HotelDetailModal';
 import HotelNumberColumn
     from "../../../../../../components/shared-components/hotel/HotelColumns/HotelNumberColumn";
 import HotelInformationColumn
@@ -147,7 +147,7 @@ const SettingMasterHotelTable = (props) => {
                     />
                 </Row>
             </Col>
-            <VendorHotelDetailModal
+            <HotelDetailModal
                 isModalOpen={isModalOpen}
                 selectedHotelKey={selectedHotelKey}
                 setIsModalOpen={setIsModalOpen}

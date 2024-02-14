@@ -8,4 +8,14 @@ VendorService.findHotel = async (params) => {
     return await axios.get(host, { params });
 }
 
+VendorService.findHotelDetail = async (record) => {
+    const host = `${HOTEL_HOST}/admin/hotels/${record.id}`;
+
+    let params = {
+        sourceSystem: record.supplierSystem,
+    }
+
+    return await axios.get(host, { params });
+}
+
 export default VendorService
