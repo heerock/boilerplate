@@ -84,18 +84,20 @@ const MappingSetting = (props) => {
     ]);
 
     useEffect(() => {
+        setSelectedCityCode(null);
         if (selectedCountryCode) {
             const country = mappingCountries.find((country) => country.countryCode === selectedCountryCode)
             if (country) {
-                setCityOptions(
-                    country.cities.map((city) => {
+                setCityOptions([
+                    { label: '== 도시 선택 ==', value: null },
+                    ...country.cities.map((city) => {
                         return {
                             label: `${city.name} (${city.englishName})`,
                             value: city.code
                         }
                     })
                     .sort((a, b) => a.label.localeCompare(b.label))
-                )
+                ])
             }
         }
 
