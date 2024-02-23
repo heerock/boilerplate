@@ -9,16 +9,26 @@ import HotelInformationColumn
 import ModifyHistoryColumn
     from "../../../../../../components/shared-components/hotel/HotelColumns/ModifyHistoryColumn";
 import DefaultTable from "../../../../../../components/shared-components/hotel/Table/DefaultTable";
+import HotelHistoryModal from "../modal/HotelHistoryModal";
+import SaleService from "../../../../../../services/Sale/SaleService";
+import VendorService from "../../../../../../services/Vendor/VendorService";
 
 const { Text } = Typography;
 
 const SettingVendorHotelTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedHotelKey, setSelectedHotelKey] = useState(null);
+    const [selectedDetailRecord, setSelectedDetailRecord] = useState(null)
+    const [selectedRecord, setSelectedRecord] = useState(null);
+    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
     const [selectedMappingHotelKey, setSelectedMappingHotelKey] = useState([]);
-    const detailViewOnClick = (id) => {
-        setSelectedHotelKey(id)
+    const detailViewOnClick = (record) => {
+        setSelectedDetailRecord(record)
         setIsModalOpen(!isModalOpen)
+    }
+
+    const historyModalOnClick = (record) => {
+        setSelectedRecord(record)
+        setIsHistoryModalOpen(!isHistoryModalOpen);
     }
 
     const [columns, setColumns] = useState([
@@ -33,7 +43,7 @@ const SettingVendorHotelTable = (props) => {
                         <HotelNumberColumn
                             channel={record.supplierSystem}
                             hotelCode={record.code}
-                            onClick={() => detailViewOnClick(record.code)}
+                            onClick={() => detailViewOnClick(record)}
                         />
                     </>
                 )
@@ -60,7 +70,7 @@ const SettingVendorHotelTable = (props) => {
                     <>
                         <ModifyHistoryColumn
                             record={record}
-                            // onClick={() => historyModalOnClick()}
+                            onClick={() => historyModalOnClick(record)}
                         />
                     </>
                 )
@@ -71,12 +81,12 @@ const SettingVendorHotelTable = (props) => {
             dataIndex: 'isSale',
             align: 'center',
             width: '12%',
-            render: (_, record) => {
+            render: (isSale, record) => {
                 return (
                     <>
-                        <Popconfirm placement="top" title={'정말로 변경하시겠습니까?'} onConfirm={() => onConfirm(record.id)} okText="Yes" cancelText="No">
+                        <Popconfirm placement="top" title={'정말로 변경하시겠습니까?'} onConfirm={() => onConfirm(record)} okText="Yes" cancelText="No">
                             <Switch
-                                checked={_ === 'Y'}
+                                checked={isSale}
                             />
                         </Popconfirm>
                     </>
@@ -85,34 +95,44 @@ const SettingVendorHotelTable = (props) => {
         }
     ])
     const [data, setData] = useState([])
-    const onConfirm = (key) => {
-        props.setData((data) => {
-            return data.map((hotel) => {
-                if (hotel.key === key) {
-                    return {
-                        ...hotel,
-                        isSale: hotel.isSale === 'N' ? 'Y' : 'N',
-                    }
-                }
+    const onConfirm = async (record) => {
+        const response = await SaleService.saleChange(record);
 
-                return hotel;
+        if (response?.success) {
+            props.setData((data) => {
+                return data.map((hotel) => {
+                    if (hotel.id === record.id) {
+                        return {
+                            ...hotel,
+                            isSale: !hotel.isSale,
+                        }
+                    }
+
+                    return hotel;
+                })
             })
-        })
+        }
     }
 
-    const onChange = (key, checked) => {
-        props.setData((data) =>
-            data.map((hotel) => {
-                if (hotel.key === key) {
-                    return {
-                        ...hotel,
-                        isMapping: checked ? 'N' : 'Y',
-                    }
-                }
+    const onChange = async (record, checked) => {
+        if (props.selectedMasterHotelKey && props.selectedMasterHotelKey.length > 0) {
+            const response = await VendorService.mappedChange(record, props.selectedMasterHotelKey[0]);
 
-                return hotel
-            })
-        )
+            if (response?.success) {
+                props.setData((data) =>
+                    data.map((hotel) => {
+                        if (hotel.id === record.id) {
+                            return {
+                                ...hotel,
+                                isMapped: !checked,
+                            }
+                        }
+
+                        return hotel
+                    })
+                )
+            }
+        }
     }
 
     useEffect(() => {
@@ -122,8 +142,8 @@ const SettingVendorHotelTable = (props) => {
     useEffect(() => {
         if (data.length > 0) {
             setSelectedMappingHotelKey(
-                data.filter((hotel) => hotel.isMapping === 'Y')
-                    .map((hotel) => hotel.key)
+                data.filter((hotel) => hotel.isMapped)
+                    .map((hotel) => hotel.id)
             )
         }
     }, [data])
@@ -134,6 +154,7 @@ const SettingVendorHotelTable = (props) => {
                 <Row>
                     <DefaultTable
                         totalCount={data.length}
+                        rowKey={'id'}
                         rowSelection={{
                             type: `checkbox`,
                             columnTitle: '매핑',
@@ -144,7 +165,7 @@ const SettingVendorHotelTable = (props) => {
                                         <Popconfirm
                                             placement="top"
                                             title={`${checked ? '선택한 호텔 매핑을 해제시키겠습니까?' : '선택한 호텔을 매핑 하시겠습니까?'}`}
-                                            onConfirm={() => onChange(record.key, checked)}
+                                            onConfirm={() => onChange(record, checked)}
                                             okText="Yes"
                                             cancelText="No"
                                         >
@@ -164,8 +185,14 @@ const SettingVendorHotelTable = (props) => {
             </Col>
             <HotelDetailModal
                 isModalOpen={isModalOpen}
-                selectedHotelKey={selectedHotelKey}
+                selectedDetailRecord={selectedDetailRecord}
                 setIsModalOpen={setIsModalOpen}
+                type={'VENDOR'}
+            />
+            <HotelHistoryModal
+                isModalOpen={isHistoryModalOpen}
+                selectedRecord={selectedRecord}
+                setIsModalOpen={setIsHistoryModalOpen}
             />
         </>
     )

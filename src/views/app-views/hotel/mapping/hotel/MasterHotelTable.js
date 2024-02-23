@@ -183,6 +183,7 @@ const MasterHotelTable = (props) => {
                         onChange={props.onChange}
                         pagination={true}
                         columns={columns}
+                        rowKey={'id'}
                         rowClassName={rowClassName}
                         data={data && data}
                         style={{ width: `100%`}}

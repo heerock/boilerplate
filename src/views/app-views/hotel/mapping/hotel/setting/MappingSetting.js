@@ -9,7 +9,8 @@ import DefaultCheckbox from 'components/shared-components/hotel/Checkbox/Default
 import SettingVendorHotelTable from "./SettingVendorHotelTable";
 import DistanceRadio from "../../../../../../components/shared-components/hotel/Radio/DistanceRadio";
 import {useSelector} from "react-redux";
-const { Text } = Typography;
+import SettingVendorHotel from "./SettingVendorHotel";
+import SettingMasterHotel from "./SettingMasterHotel";
 const defaultMasterData = [
     {
         key: '11eebb1e-300e-98d6-850e-95b5d5006522',
@@ -76,27 +77,11 @@ const MappingSetting = (props) => {
     const [selectedCityCode, setSelectedCityCode] = useState(null);
     const [cityOptions, setCityOptions] = useState([]);
     const [selectedVendorHotelKey, setSelectedVendorHotelKey] = useState([]);
-    const [distanceOptions, setDistanceOptions] = useState([
-        {label: '1km 이내', value: 1},
-        {label: '2km 이내', value: 2},
-        {label: '3km 이내', value: 3},
-        {label: '4km 이내', value: 4},
-        {label: '5km 이내', value: 5},
-        {label: '5km 이상', value: 0},
-    ])
-    const [distance, setDistance] = useState(1);
-
-    const onChange = ({ target: { value }}) => {
-        setDistance(value);
-    }
-
-    useEffect(() => {
-        console.log('selectedVendorHotelKey : ', selectedVendorHotelKey)
-    }, [selectedVendorHotelKey])
-
-    useEffect(() => {
-        setSelectedCityCode(null);
-    }, [selectedCountryCode])
+    const [selectedMasterHotelKey, setSelectedMasterHotelKey] = useState([]);
+    const [masterfilterOptions, setMasterFilterOptions] = useState([
+        { label: '마스터 호텔 코드', value: 'HOTEL_CODE' },
+        { label: '마스터 호텔명', value: 'HOTEL_NAME' },
+    ]);
 
     useEffect(() => {
         if (selectedCountryCode) {
@@ -105,10 +90,11 @@ const MappingSetting = (props) => {
                 setCityOptions(
                     country.cities.map((city) => {
                         return {
-                            label: city.name,
-                            value: city.cityCode
+                            label: `${city.name} (${city.englishName})`,
+                            value: city.code
                         }
                     })
+                    .sort((a, b) => a.label.localeCompare(b.label))
                 )
             }
         }
@@ -127,116 +113,30 @@ const MappingSetting = (props) => {
                             placeholder={`=== 국가 선택 ===`}
                             options={mappingCountriesOption}
                         />
-                        {/*<DefaultButton style={{ marginLeft: '5px' }} text={'검색하기'}/>*/}
                     </Row>
                     <Divider />
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{display: 'flex'}}>
                     <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Row>
-                            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                                <Row gutter={[8, 0]}>
-                                    <Col xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
-                                        <Form.Item style={{ marginBottom: '0.325rem' }}>
-                                            <Text>도시 선택</Text>
-                                            <DefaultSelect
-                                                width={100}
-                                                setSelectedKey={setSelectedCityCode}
-                                                value={selectedCityCode}
-                                                options={cityOptions}
-                                                placeholder={`== 도시 선택 ==`}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
-
-                                        <Form.Item style={{ marginBottom: '0.325rem' }}>
-                                            <Text>맵핑 유무</Text>
-                                            <DefaultSelect
-                                                width={100}
-                                                placeholder={`== 전체 ==`}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
-
-                                        <Form.Item style={{ marginBottom: '0.325rem' }}>
-                                            <Text>판매 유무</Text>
-                                            <DefaultSelect
-                                                width={100}
-                                                placeholder={`== 전체 ==`}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                <Row gutter={[8, 0]}>
-                                    <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
-                                        <DefaultSelect
-                                            width={100}
-                                            placeholder={'== 마스터 호텔 코드 =='}
-                                        />
-                                    </Col>
-                                    <Col xs={18} sm={18} md={18} lg={18} xl={18} xxl={18}>
-                                        <DefaultSearch
-                                            placeholder="마스터 호텔 정보를 검색해주세요."
-                                            style={{
-                                                width: `100%`,
-                                            }}
-                                        />
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row gutter={[8, 8]} style={{ marginTop: '10px' }}>
-                            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                                <SettingMasterHotelTable data={masterData} setData={setMasterData} />
-                            </Col>
-                        </Row>
+                       <SettingMasterHotel
+                           selectedCityCode={selectedCityCode}
+                           setSelectedCityCode={setSelectedCityCode}
+                           selectedCountryCode={selectedCountryCode}
+                           cityOptions={cityOptions}
+                           masterfilterOptions={masterfilterOptions}
+                           data={masterData}
+                           setData={setMasterData}
+                           selectedMasterHotelKey={selectedMasterHotelKey}
+                           setSelectedMasterHotelKey={setSelectedMasterHotelKey}
+                       />
                     </Col>
 
                     <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Row>
-                            <Col xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
-                                <Form.Item style={{ marginBottom: '0.325rem' }}>
-                                    <DefaultSelect
-                                        width={100}
-                                        placeholder={`== 공급처 선택 선택 ==`}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                                <Form.Item style={{ textAlign: 'left', marginBottom: '0.325rem' }}>
-                                    <DefaultCheckbox
-                                        onChange={onChange}
-                                        text={'판매 중인 호텔만 보기'}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={[8, 0]}>
-                            <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
-                                <DefaultSelect
-                                    width={100}
-                                    placeholder={'공급업체 호텔코드'}
-                                />
-                            </Col>
-                            <Col xs={18} sm={18} md={18} lg={18} xl={18} xxl={18}>
-                                <DefaultSearch
-                                    placeholder="공급처 호텔 정보를 검색해주세요."
-                                    // onSearch={}
-                                    style={{
-                                        width: `100%`,
-                                    }}
-                                />
-                            </Col>
-                        </Row>
-                        <Row gutter={[8, 8]} style={{ marginTop: '10px' }}>
-                            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                                <SettingVendorHotelTable data={vendorData} setData={setVendorData}/>
-                            </Col>
-                        </Row>
+                        <SettingVendorHotel
+                            selectedMasterHotelKey={selectedMasterHotelKey}
+                            data={vendorData}
+                            setData={setVendorData}
+                        />
                     </Col>
 
                 </Col>

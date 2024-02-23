@@ -10,6 +10,7 @@ import utils from 'utils'
 import styled from 'styled-components';
 import { onMobileNavToggle } from "redux/actions/Theme";
 import DefaultButton from "../shared-components/hotel/Button/DefaultButton";
+import {ADMIN_HOST} from "../../configs/HostConfig";
 
 const { SubMenu } = Menu;
 const { useBreakpoint } = Grid;
@@ -111,6 +112,10 @@ const SideNavContent = (props) => {
     }
   };
 
+  const onClickDirect = () => {
+    window.location.href = `${ADMIN_HOST}/carmore/Dashboard`;
+  }
+
   useEffect(() => {
     if (routeInfo?.key) setSelectedKey([routeInfo.key]);
     // if (routeInfo?.path) {
@@ -144,6 +149,7 @@ const SideNavContent = (props) => {
            marginBottom: '0.6rem',
            backgroundImage: 'linear-gradient(to bottom, #8dcdfe 0%, #336ebc 100%)'
          }}
+         onClick={onClickDirect}
          text={'카모아 운영툴 바로가기'}
       />
       {getMenu(navigationConfig)}

@@ -41,6 +41,7 @@ const VendorHotelTable = (props) => {
                 <>
                     <HotelNumberColumn
                         channel={record?.supplierSystem}
+                        originCode={record?.sourceSystemId}
                         isSelfSale={record.isSelfSale}
                         hotelCode={record.code}
                         onClick={() => detailViewOnClick(record)}

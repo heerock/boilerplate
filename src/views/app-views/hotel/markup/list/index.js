@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Col, Input, Row, Space, Typography } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Col, Input, Row, Space, Typography, Spin } from 'antd';
 import styled from 'styled-components';
 
 import PageHeader from 'components/shared-components/PageHeader/PageHeader';
@@ -8,130 +8,43 @@ import DefaultTable from 'components/shared-components/hotel/Table/DefaultTable'
 import DefaultButton from 'components/shared-components/hotel/Button/DefaultButton';
 import HotelHistoryModal from '../../mapping/hotel/modal/HotelHistoryModal';
 import HotelDetailModal from '../../mapping/hotel/modal/HotelDetailModal';
+import HotelNumberColumn from "../../../../../components/shared-components/hotel/HotelColumns/HotelNumberColumn";
+import MarkupHotelTable from "./MarkupHotelTable";
+import { useSelector, useDispatch } from "react-redux";
+import LocationService from "../../../../../services/Location/LocationService";
+import {mappingCountriesAction, mappingCountriesOptionAction} from "../../../../../redux/actions/Location";
+import {LoadingOutlined} from "@ant-design/icons";
+import VendorService from "../../../../../services/Vendor/VendorService";
+import {VENDOR_FILTER_OPTIONS} from "../../../../../constants/VendorConstant";
+import HotelVendorSystemMarkupModal from "../../mapping/hotel/modal/HotelVendorSystemMarkupModal";
 
 const { Text } = Typography;
 
 const MarkupList = () => {
-    const [columns, setColumns] = useState([
-        { 
-            title: '공급처 호텔코드', 
-            dataIndex: 'vendorHotelCode',
-            align: 'center',
-            render: (_, record) => {
-              return (
-                  <>
-                      <Col>
-                          <Row>
-                              <StyleBadgeDiv channel={record.channel}>{record.channel}</StyleBadgeDiv>
-                          </Row>
-                          <Row>
-                              <Text style={{margin: '0 auto'}}>{record.vendorHotelCode}</Text>
-                          </Row>
-                          <Row>
-                              <DefaultButton 
-                                  style={{ width: '50%', margin: '0 auto' }}
-                                  onClick={() => detailViewOnClick(record.vendorHotelCode)}
-                                  text={'상세보기'}
-                              />
-                          </Row>
-                      </Col>
-                  </>
-              )
-            }
-        },
-        { 
-            title: '공급처 호텔 정보', 
-            dataIndex: 'vendorHotelInfo',
-            align: 'center',
-            render: (_, record) => {
-              return (
-                  <>
-                      <Col>
-                          <Row>
-                              <Text>{`${record.country} > ${record.cityName}`}</Text>
-                          </Row>
-                          <Row>
-                              <Text>{`${record.hotelName}`}</Text>
-                          </Row>
-                          <Row>
-                              <Text>{`T.${record.tel} / F.${record.fax}`}</Text>
-                          </Row>
-                          <Row>
-                              <Text>{record.address}</Text>
-                          </Row>
-                          <Row>
-                              <Text>{`Grade: ${record.grade} STARS`}</Text>
-                          </Row>
-                      </Col>
-                  </>
-              )
-            }
-        },
-        { 
-            title: '날짜별 마크업', 
-            dataIndex: '_',
-            align: 'center',
-            render: (_, record) => {
-              return (
-                  <>
-                    <DefaultButton type={'link'} href={`/app/hotel/markup/${record.vendorHotelCode}`} style={{ margin: '0 auto' }} text={`설정`} />
-                  </>
-              )
-            }
-        },
-        { 
-            title: '마크업 변경', 
-            dataIndex: '_',
-            align: 'center',
-            render: (_, record) => {
-              return (
-                  <>
-                      <Col>
-                      <Space>
-                        <Input />
-                        <Text>%</Text>
-                        <DefaultButton text={`저장`} />
-                      </Space>
-                      </Col>
-                  </>
-              )
-            }
-        },
-        { 
-            title: '최종 수정 이력', 
-            dataIndex: 'updatedAt',
-            align: 'center',
-            render: (_, record) => {
-              return (
-                  <>
-                      <Col style={{display: 'inline-grid'}}>
-                          <Row>
-                              {record.updatedId}        
-                          </Row>
-                          <Row>
-                              {record.updatedAt}        
-                          </Row>
-                          <Row>
-                              <DefaultButton 
-                                  style={{margin: '0 auto'}} 
-                                  type="link"
-                                  text={`기록보기`}
-                                  onClick={() => historyModalOnClick(record.vendorHotelCode)}
-                              />
-                          </Row>
-                      </Col>
-                  </>
-              )
-            }
-          },
-    ])
-
-    const [data, setData] = useState([
-        { key: '1', vendorHotelCode: 'HK12345678', channel: 'HG', country: 'Japan', cityName: '교토 (Kyoto)', address: 'Karasuma Shijo, Shimogyo-ku 600-8412 Kyoto JP', hotelName: 'KARASUMA KYOTO HOTEL1', tel: '075-371-0111', fax: '075-221-7770', grade: 4, updatedId: 'heerock@teamo2.kr', updatedAt: '2023-12-25 15:48:00'},
-    ])
+    const { mappingCountries, mappingCountriesOption } = useSelector(state => state.location);
+    const [vendorSystem, setVendorSystem] = useState('HIKARI_TOUR');
+    const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false); 
+    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+    const [isVendorSystemMarkupModalOpen, setIsVendorSystemMarkupModalOpen] = useState(false);
+    const [vendorSystems, setVendorSystems] = useState(null);
+    const [selectedVendorSystem, setSelectedVendorSystem] = useState(null);
     const [selectedHotelKey, setSelectedHotelKey] = useState(null);
+    const [countryKey, setCountryKey] = useState(null);
+    const [cityKey, setCityKey] = useState(null);
+    const [vendorHotels, setVendorHotels] = useState([]);
+    const [pagination, setPagination] = useState(null);
+    const [cityOptions, setCityOptions] = useState([]);
+    const [filterValue, setFilterValue] = useState('HOTEL_NAME');
+    const [filterOptions, setFilterOptions] = useState([
+        { label: '공급처 호텔명', value: 'HOTEL_NAME' },
+        { label: '공급처 호텔 코드', value: 'HOTEL_CODE' },
+    ]);
+    const [params, setParams] = useState({
+        page: 1,
+        pageSize: 10,
+    });
+    const dispatch = useDispatch();
 
     const historyModalOnClick = (key) => {
         setSelectedHotelKey(key);
@@ -143,34 +56,183 @@ const MarkupList = () => {
         setIsModalOpen(!isModalOpen);
     }
 
+    const onClickRefresh = async (record, rate) => {
+        const { success } = await VendorService.updatedMarkupVendorSystem({ record, rate })
+
+        if (success) {
+          getMarkupVendorSystemRefresh()
+        }
+    }
+
+    const getMarkupVendorSystemRefresh = async () => {
+        const { success, supplierMarkups } = await getMarkupVendorSystem();
+
+        if (success) {
+            setVendorSystems(supplierMarkups);
+        }
+    }
+
+    const getFetch = async (params) => {
+        if (!mappingCountries || mappingCountries.length === 0) {
+            await getCountry(vendorSystem)
+        }
+
+        if (!vendorSystems) {
+            const { success, supplierMarkups } = await getMarkupVendorSystem();
+
+            if (success) {
+                setVendorSystems(supplierMarkups);
+            }
+        }
+
+        const { success, pagination, supplierHotels } = await getVendorMarkupHotels(params)
+
+        if (success) {
+            setVendorHotels(supplierHotels)
+            setPagination(pagination)
+        }
+    }
+
+    const getMarkupVendorSystem = async () => {
+        return await VendorService.getMarkupVendorSystems()
+    }
+
+    const getVendorMarkupHotels = async (params) => {
+        return await VendorService.getMarkupHotels(params)
+    }
+
+    const getCountry = async (key) => {
+        const { supplierCountries } = await LocationService.country(key)
+
+        if (supplierCountries) {
+            dispatch(mappingCountriesAction(supplierCountries))
+            dispatch(mappingCountriesOptionAction([
+                { label: '== 국가 선택==', value: null },
+                ...supplierCountries.map((country) => {
+                    return { label: country.name, value: country.countryCode }
+                })
+                    .sort((a, b) => a.label.localeCompare(b.label))
+            ]))
+
+            return true
+        }
+        return false
+    }
+
+    const onClickVendorSystemMarkup = () => {
+        setIsVendorSystemMarkupModalOpen(!isVendorSystemMarkupModalOpen)
+    }
+
+    const onChangePage = (nPage, nPageSize) => {
+        if (params.page !== nPage) setParams(params => ({...params, page: nPage}))
+        if (params.pageSize !== nPageSize) setParams(params => ({...params, pageSize: nPageSize}));
+    }
+
+    const onSearch = (value, _e, info) => {
+        let set_params = {
+            page: 1,
+            pageSize: params.pageSize,
+        };
+
+        if (vendorSystem) {
+            set_params = { ...set_params, supplierSystem: vendorSystem }
+        }
+
+        if (filterValue === VENDOR_FILTER_OPTIONS.HOTEL_CODE) {
+            set_params = { ...set_params, supplierHotelCode: value }
+        } else if (filterValue === VENDOR_FILTER_OPTIONS.HOTEL_NAME) {
+            set_params = { ...set_params, supplierHotelName: value }
+        }
+
+        if (countryKey) set_params = { ...set_params, countryCode: countryKey };
+        if (cityKey) set_params = { ...set_params, cityCode: cityKey };
+
+        setParams(set_params)
+    }
+
+    useEffect(() => {
+        if (vendorSystem && vendorSystems) {
+            setSelectedVendorSystem(vendorSystems.find((vendor) => vendor.supplierSystem === vendorSystem));
+        }
+    }, [vendorSystem, vendorSystems])
+
+    useEffect(() => {
+        setLoading(true)
+        let _params = {...params}
+
+        if (vendorSystem) {
+            _params = {
+                ...params,
+                supplierSystem: vendorSystem,
+            }
+        }
+
+        Promise.allSettled([getFetch(_params)]).then(() => setLoading(false))
+    }, [params])
+
 	return (
 		<>
-			<Row>
-				<Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                    <Row>
-                        <PageHeader level={2} title={'호텔 마크업 관리'}/>
-                    </Row>
-                    <Row>
-                        <SearchFilter />
-                    </Row>
-                    <Row gutter={[8, 8]} style={{ marginTop: '1.825rem' }}>
-                        <DefaultTable 
-                            totalCount={1}
-                            columns={columns} 
-                            data={data}
-                        />
-                    </Row>
-				</Col>
-			</Row>
-
-            <HotelDetailModal
-                isModalOpen={isModalOpen} 
-                selectedHotelKey={selectedHotelKey}
-                setIsModalOpen={setIsModalOpen}
-            />
-            <HotelHistoryModal 
-                isModalOpen={isHistoryModalOpen}
-                setIsModalOpen={setIsHistoryModalOpen}
+            <Spin
+                style={{
+                    position: 'fixed',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                }}
+                spinning={loading}
+                tip={'로딩중..'}
+                indicator={
+                    <LoadingOutlined
+                        style={{
+                            fontSize: '4rem',
+                        }}
+                        spin
+                    />
+                }
+            >
+                <Row>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                        <Row>
+                            <PageHeader level={2} title={'호텔 마크업 관리'}/>
+                        </Row>
+                        <Row>
+                            <SearchFilter
+                                mappingCountriesOption={mappingCountriesOption}
+                                mappingCountries={mappingCountries}
+                                vendorSystem={vendorSystem}
+                                setVendorSystem={setVendorSystem}
+                                countryKey={countryKey}
+                                setCountryKey={setCountryKey}
+                                setCityOptions={setCityOptions}
+                                cityOptions={cityOptions}
+                                cityKey={cityKey}
+                                setCityKey={setCityKey}
+                                filterOptions={filterOptions}
+                                filterValue={filterValue}
+                                setFilterValue={setFilterValue}
+                                onSearch={onSearch}
+                                selectedVendorSystem={selectedVendorSystem}
+                                onClick={onClickVendorSystemMarkup}
+                            />
+                        </Row>
+                        <Row gutter={[8, 8]} style={{ marginTop: '1.825rem' }}>
+                            <MarkupHotelTable
+                                data={vendorHotels}
+                                setData={setVendorHotels}
+                                page={params.page}
+                                pageSize={params.pageSize}
+                                onChange={onChangePage}
+                                pagination={pagination}
+                            />
+                        </Row>
+                    </Col>
+                </Row>
+            </Spin>
+            <HotelVendorSystemMarkupModal
+                vendorSystems={vendorSystems}
+                isModalOpen={isVendorSystemMarkupModalOpen}
+                setIsModalOpen={setIsVendorSystemMarkupModalOpen}
+                onClick={onClickRefresh}
             />
 		</>
 	)

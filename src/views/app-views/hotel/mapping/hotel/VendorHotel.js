@@ -25,20 +25,20 @@ const VendorHotel = (props) => {
     const [isNotMapped, setIsNotMapped] = useState(false)
     const [cityKey, setCityKey] = useState(null);
     const [cityOptions, setCityOptions] = useState([]);
-    const [filterValue, setFilterValue] = useState('HOTEL_CODE');
+    const [filterValue, setFilterValue] = useState('HOTEL_ORIGINAL_CODE');
     const [filterOptions, setFilterOptions] = useState([
-        { label: '공급처 호텔 코드', value: 'HOTEL_CODE' },
+        { label: '공급처 원본 코드', value: 'HOTEL_ORIGINAL_CODE' },
+        { label: '호텔모아 공급처 코드', value: 'HOTEL_CODE' },
         { label: '공급처 호텔명', value: 'HOTEL_NAME' },
-        { label: '공급처 도시명', value: 'HOTEL_CITY_NAME' },
     ]);
 
     const [hotels, setHotels] = useState([]);
     const [pagination, setPagination] = useState(null);
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5)
+    const [pageSize, setPageSize] = useState(6)
     const [params, setParams] = useState({
         page: 1,
-        pageSize: 4,
+        pageSize: 6,
         supplierSystem: vendor,
     });
     const onSearch = (value, _e, info) => {
@@ -51,8 +51,8 @@ const VendorHotel = (props) => {
             set_params = { ...set_params, supplierHotelCode: value }
         } else if (filterValue === VENDOR_FILTER_OPTIONS.HOTEL_NAME) {
             set_params = { ...set_params, supplierHotelName: value }
-        } else if (filterValue === VENDOR_FILTER_OPTIONS.HOTEL_CITY_NAME) {
-            set_params = { ...set_params, supplierCityName: value }
+        } else if (filterValue === VENDOR_FILTER_OPTIONS.HOTEL_ORIGINAL_CODE) {
+            set_params = { ...set_params, supplierSourceSystemId: value }
         }
 
         if (isNotMapped) set_params = { ...set_params, isNotMapped };
@@ -96,8 +96,8 @@ const VendorHotel = (props) => {
                     { label: '== 도시 선택 ==', value: null },
                     ...country.cities.map((city) => {
                         return {
-                            label: city.name,
-                            value: city.cityCode
+                            label: `${city.name} (${city.englishName})`,
+                            value: city.code
                         }
                     })
                     .sort((a, b) => a.label.localeCompare(b.label))

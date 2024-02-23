@@ -8,5 +8,10 @@ LogService.findByHotelId = async (id, params) => {
     return await axios.get(host, { params });
 }
 
+LogService.findMarkupHotelByHotelId = async (params) => {
+    const host = `${HOTEL_HOST}/admin/markup/log`;
+
+    return await axios.get(host, { params });
+}
 
 export default LogService

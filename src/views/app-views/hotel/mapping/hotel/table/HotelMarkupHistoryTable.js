@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Col, Row, Radio, Table, Typography, Button } from 'antd';
 import styled from 'styled-components';
 import moment from 'moment';
+import MarkupRangeColumn from "../../../../../../components/shared-components/hotel/LogColumns/MarkupRangeColumn";
+import MarkupChangeHistoryColumn
+    from "../../../../../../components/shared-components/hotel/LogColumns/MarkupChangeHistoryColumn";
 
 const { Text } = Typography;
 
-const HotelHistoryTable = (props) => {
+const HotelMarkupHistoryTable = (props) => {
     const [columns, setColumns] = useState([
         {
           title: '분류', 
@@ -26,42 +29,30 @@ const HotelHistoryTable = (props) => {
           }
         },
         { 
-          title: '변경 상태', 
-          dataIndex: 'status',
+          title: '적용 범위',
+          dataIndex: 'range',
           align: 'center',
-          render: (status) => {
+          render: (_, record) => {
             return (
                 <>
-                    <Text>{status ? 'Y' : 'N'}</Text>
+                    <MarkupRangeColumn record={record}/>
                 </>
             )
           }
         },
         {
-            title: '호텔 코드',
+            title: '변경 상태',
             dataIndex: 'mappedHotel',
             align: 'center',
-            render: (mappedHotel, record) => {
+            render: (_, record) => {
               return (
                   <>
-                      <Text>{mappedHotel?.hotelCode}</Text>
+                      <MarkupChangeHistoryColumn record={record} />
                   </>
               )
             }
         },
-        { 
-            title: '호텔명', 
-            dataIndex: 'mappedHotel',
-            align: 'center',
-            render: (mappedHotel, record) => {
-              return (
-                  <>
-                      <Text>{mappedHotel?.hotelName}</Text>
-                  </>
-              )
-            }
-        },
-        { 
+        {
             title: '수정자', 
             dataIndex: 'adminEmail',
             align: 'center',
@@ -128,4 +119,4 @@ export const StyleBadgeDiv = styled.div`
   text-align: center;
 `
 
-export default HotelHistoryTable
+export default HotelMarkupHistoryTable

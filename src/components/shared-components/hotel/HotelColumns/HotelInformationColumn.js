@@ -12,12 +12,20 @@ const HotelInformationColumn = (props) => {
         <>
 
             <Col style={{ textAlign: 'left' }}>
-                {
-                    record?.similarityScore &&
-                    <Col style={{ fontSize: '0.765rem', marginBottom: '0.225rem' }}>
-                        <Text style={{ color: '#6C757D', marginRight: '0.275rem' }}>유사도 점수</Text><Text style={{ color: '#6C757D' }}>{record?.similarityScore}</Text>
-                    </Col>
-                }
+                <Col style={{ fontSize: '0.765rem', marginBottom: '0.225rem' }}>
+                    {
+                        record?.distance &&
+                        <>
+                            <Text style={{ color: '#6C757D', marginRight: '0.275rem' }}>반경 거리</Text><Text style={{ color: '#97A4AF', fontSize: '0.685rem', marginRight: '0.825rem' }}>{Number(record?.distance).toFixed(6) || 0}</Text>
+                        </>
+                    }
+                    {
+                        'similarityScore' in record && record?.similarityScore !== null &&
+                            <>
+                                <Text style={{ color: '#6C757D', marginRight: '0.275rem' }}>유사도 점수</Text><Text style={{ fontSize: '0.685rem', color: '#97A4AF' }}>{record?.similarityScore || 0}</Text>
+                            </>
+                    }
+                </Col>
                 {
                     record?.mappedSupplierSystems &&
                         <Row gutter={[8, 8]}>

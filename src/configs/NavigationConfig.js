@@ -5,14 +5,14 @@ import {
 const dashBoardNavTree = [{
   key: 'hotel',
   path: '/app/hotel',
-  title: '카모아 호텔',
+  title: 'HOTEL',
   icon: DashboardOutlined,
   breadcrumb: true,
   submenu: [
     {
       key: "HOTEL_MAPPING",
       path: "/app/hotel/mapping/hotel",
-      title: "호텔 매핑 관리",
+      title: "HOTEL_MAPPING",
       icon: "",
       breadcrumb: false,
       parentkey: 'hotel',
@@ -21,7 +21,7 @@ const dashBoardNavTree = [{
     {
       key: "HOTEL_RESERVATION",
       path: "/app/hotel/reservation",
-      title: "호텔 예약 관리",
+      title: "HOTEL_RESERVATION",
       icon: "",
       breadcrumb: false,
       parentkey: 'hotel',
@@ -30,7 +30,7 @@ const dashBoardNavTree = [{
     {
       key: "HOTEL_MARKUP_SETTING",
       path: "/app/hotel/markup",
-      title: "호텔 마크업 관리",
+      title: "HOTEL_MARKUP_SETTING",
       icon: "",
       breadcrumb: false,
       parentkey: 'hotel',
@@ -41,14 +41,14 @@ const dashBoardNavTree = [{
 {
   key: 'carmore',
   path: '/app/carmore',
-  title: '카모아 차량',
+  title: 'CARMORE',
   icon: DashboardOutlined,
   breadcrumb: true,
   submenu: [
     {
       key: "CAR_RESERVATION",
       path: "/app/hotel/mapping/hotel",
-      title: "차량 예약 관리",
+      title: "CAR_RESERVATION",
       icon: "",
       breadcrumb: false,
       parentkey: 'carmore',
@@ -66,7 +66,7 @@ const dashBoardNavTree = [{
     {
       key: "QA_HOTEL_DATE_CHANGE",
       path: "/app/qa/hotel/reservation",
-      title: "호텔 예약 변경",
+      title: "QA_HOTEL_DATE_CHANGE",
       icon: "",
       breadcrumb: false,
       parentkey: 'QA',

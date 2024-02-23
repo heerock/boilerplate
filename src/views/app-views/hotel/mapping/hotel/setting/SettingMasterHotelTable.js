@@ -9,16 +9,26 @@ import HotelInformationColumn
 import ModifyHistoryColumn
     from "../../../../../../components/shared-components/hotel/HotelColumns/ModifyHistoryColumn";
 import DefaultTable from "../../../../../../components/shared-components/hotel/Table/DefaultTable";
+import HotelHistoryModal from "../modal/HotelHistoryModal";
+import SaleService from "../../../../../../services/Sale/SaleService";
 
 const { Text } = Typography;
 
 const SettingMasterHotelTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedHotelKey, setSelectedHotelKey] = useState(null);
-    const detailViewOnClick = (id) => {
-        setSelectedHotelKey(id)
+    const [selectedDetailRecord, setSelectedDetailRecord] = useState(null)
+    const [selectedRecord, setSelectedRecord] = useState(null);
+    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+    const detailViewOnClick = (record) => {
+        setSelectedDetailRecord(record)
         setIsModalOpen(!isModalOpen)
     }
+
+    const historyModalOnClick = (record) => {
+        setSelectedRecord(record)
+        setIsHistoryModalOpen(!isHistoryModalOpen);
+    }
+
     const [columns, setColumns] = useState([
         {
             title: '마스터 호텔코드',
@@ -29,9 +39,9 @@ const SettingMasterHotelTable = (props) => {
                 return (
                     <>
                         <HotelNumberColumn
-                            channel={record.supplierSystem}
-                            hotelCode={record.hotelCode}
-                            onClick={() => detailViewOnClick(record.hotelCode)}
+                            channel={record.masterSystem}
+                            hotelCode={record.code}
+                            onClick={() => detailViewOnClick(record)}
                         />
                     </>
                 )
@@ -59,7 +69,7 @@ const SettingMasterHotelTable = (props) => {
                     <>
                         <ModifyHistoryColumn
                             record={record}
-                            // onClick={}
+                            onClick={() => historyModalOnClick(record)}
                         />
                     </>
                 )
@@ -70,12 +80,12 @@ const SettingMasterHotelTable = (props) => {
             dataIndex: 'isSale',
             align: 'center',
             width: '12%',
-            render: (_, record) => {
+            render: (isSale, record) => {
                 return (
                     <>
-                        <Popconfirm placement="top" title={'정말로 변경하시겠습니까?'} onConfirm={() => onConfirm(record.key)} okText="Yes" cancelText="No">
+                        <Popconfirm placement="top" title={'정말로 변경하시겠습니까?'} onConfirm={() => onConfirm(record)} okText="Yes" cancelText="No">
                             <Switch
-                                checked={_ === 'Y'}
+                                checked={isSale}
                             />
                         </Popconfirm>
                     </>
@@ -85,62 +95,53 @@ const SettingMasterHotelTable = (props) => {
     ])
     const [data, setData] = useState([])
 
-    const onConfirm = (key) => {
-        props.setData((data) => {
-            return data.map((hotel) => {
-                if (hotel.key === key) {
-                    return {
-                        ...hotel,
-                        isSale: hotel.isSale === 'N' ? 'Y' : 'N',
-                    }
-                }
+    const onConfirm = async (record) => {
+        const response = await SaleService.saleChange(record);
 
-                return hotel;
+        if (response?.success) {
+            props.setData((data) => {
+                return data.map((hotel) => {
+                    if (hotel.id === record.id) {
+                        return {
+                            ...hotel,
+                            isSale: !hotel.isSale,
+                        }
+                    }
+
+                    return hotel;
+                })
             })
-        })
+        }
     }
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            props.setSelectedMasterHotelKey(selectedRowKeys)
         },
     };
-
-    const onChangeSwitch = (checked, key) => {
-        props.setData((data) => {
-            return data.map((hotel) => {
-                if (hotel.key === key) {
-                    return {
-                        ...hotel,
-                        isSale: checked ? 'Y' : 'N',
-                    }
-                }
-
-                return hotel;
-            })
-        })
-    }
 
     useEffect(() => {
         setData(props.data);
     }, [props.data])
-
-    useEffect(() => {
-        console.log('data : ', data)
-    }, [data])
 
     return (
         <>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <Row style={{ marginTop: '10px' }}>
                     <DefaultTable
-                        totalCount={data.length}
+                        rowKey={'id'}
                         rowSelection={{
                             type: `radio`,
                             hideSelectAll: true,
+                            selectedRowKeys: props.selectedMasterHotelKey,
                             ...rowSelection,
                         }}
-                        isPagination={false}
+                        totalCount={props.pagination ? Number(props.pagination.totalElements) : 0}
+                        totalPages={props.pagination ? Number(props.pagination.totalPages) : 1}
+                        page={props.page}
+                        pageSize={props.pageSize}
+                        pagination={true}
+                        onChange={props.onChange}
                         columns={columns}
                         data={data && data}
                         style={{ width: `100%`}}
@@ -149,8 +150,14 @@ const SettingMasterHotelTable = (props) => {
             </Col>
             <HotelDetailModal
                 isModalOpen={isModalOpen}
-                selectedHotelKey={selectedHotelKey}
+                selectedDetailRecord={selectedDetailRecord}
                 setIsModalOpen={setIsModalOpen}
+                type={'MASTER'}
+            />
+            <HotelHistoryModal
+                isModalOpen={isHistoryModalOpen}
+                selectedRecord={selectedRecord}
+                setIsModalOpen={setIsHistoryModalOpen}
             />
         </>
     )

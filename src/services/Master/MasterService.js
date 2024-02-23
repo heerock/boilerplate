@@ -27,8 +27,6 @@ MasterService.findHotelDetail = async (record) => {
         sourceSystem: record.masterSystem,
     }
 
-    console.log('record : ', record)
-
     if ('mappedHotelId' in record && record.mappedHotelId && record.mappedHotelId.length > 0) {
         params = {
             ...params,
@@ -38,5 +36,13 @@ MasterService.findHotelDetail = async (record) => {
 
     return await axios.get(host, { params });
 }
+
+MasterService.findHotelSetting = async (params) => {
+    const host = `${HOTEL_HOST}/admin/hotels/management/master`;
+
+    return await axios.get(host, { params });
+}
+
+
 
 export default MasterService

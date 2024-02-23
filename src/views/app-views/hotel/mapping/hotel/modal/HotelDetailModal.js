@@ -12,6 +12,7 @@ import VendorFacilities from "./detail-modal/VendorFacilities";
 import MasterFacilities from "./detail-modal/MasterFacilities";
 import ImportantInformation from "./detail-modal/ImportantInformation";
 import AdditionalInformation from "./detail-modal/AdditionalInformation";
+import {mappingCountriesOptionAction} from "../../../../../../redux/actions/Location";
 
 const { TextArea } = Input;
 const { Text, Title } = Typography;
@@ -25,6 +26,9 @@ const HotelDetailModal = (props) => {
     const [type, setType] = useState();
     const [editMode, setEditMode] = useState(false);
     const [selectedKey, setSelectedKey] = useState(null);
+    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedCity, setSelectedCity] = useState(null);
+    const [cityOptions, setCityOptions] = useState([]);
     const [checkIn, setCheckIn] = useState('');
     const [checkOut, setCheckOut] = useState('');
     const [hotelTypeOptions, setHotelTypeOptions] = useState([
@@ -91,13 +95,28 @@ const HotelDetailModal = (props) => {
 
     useEffect(() => {
         if (hotel) {
-            setSelectedKey([hotel.cityCode])
+            if (hotel?.country) setSelectedCountry(hotel.country.code)
+            if (hotel?.city) setSelectedCity(hotel.city.code)
         }
     }, [hotel])
 
     useEffect(() => {
-        // console.log('mappingCountries : ' ,mappingCountries)
-    }, [mappingCountries])
+        if (selectedCountry) {
+            const country = mappingCountries.find((country) => country.countryCode === selectedCountry)
+            if (country) {
+                setCityOptions([
+                    { label: '== 도시 선택 ==', value: null },
+                    ...country.cities.map((city) => {
+                        return {
+                            label: city.name,
+                            value: city.code
+                        }
+                    })
+                        .sort((a, b) => a.label.localeCompare(b.label))
+                ])
+            }
+        }
+    }, [selectedCountry])
 
     const getFetch = async (record) => {
         let service = null;
@@ -196,21 +215,21 @@ const HotelDetailModal = (props) => {
                                 disabled={true}
                                 setSelectedKey={setSelectedKey}
                                 placeholder={'== 유형 선택 =='}
-                                options={[{ label: '호텔', value: 'HOTEL' }]}
+                                options={hotelTypeOptions}
                             />
                         </Descriptions.Item>
 
                         <Descriptions.Item label="호텔명(한글)">{hotel && hotel?.name}</Descriptions.Item>
                         <Descriptions.Item label="호텔명(영어)" labelStyle={{ width: '12%'}} span={2}>{hotel && hotel?.englishName}</Descriptions.Item>
 
-                        <Descriptions.Item label="국가">Japan</Descriptions.Item>
+                        <Descriptions.Item label="국가">{hotel && hotel?.country?.name}</Descriptions.Item>
                         <Descriptions.Item label="도시" span={2}>
                             <DefaultSelect
                                 width={50}
-                                value={selectedKey}
-                                setSelectedKey={setSelectedKey}
+                                value={selectedCity}
+                                setSelectedKey={setSelectedCity}
                                 placeholder={'== 도시 선택 =='}
-                                options={[{ label: '교토 (Kyoto)', value: 'KYOTO' }]}
+                                options={cityOptions}
                             />
                         </Descriptions.Item>
 
