@@ -16,6 +16,7 @@ const MarkupRangeColumn = (props) => {
                 setValue('공급처 공통 마크업 변경')
                 break;
             case 'HOTEL_BY_SUPPLIER':
+                setValue('공급처 공통 마크업 변경')
                 break;
             default:
                 break;

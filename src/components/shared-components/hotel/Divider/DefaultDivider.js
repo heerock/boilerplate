@@ -12,6 +12,7 @@ const DefaultDivider = (props) => {
 
 export const StyleDivider = styled(Divider)`
   margin: 6px 0px;
+  color: #455560;
 `
 
 export default DefaultDivider

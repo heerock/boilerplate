@@ -96,3 +96,15 @@
         }
     }
 }
+
+.popconfirmCancelBtn {
+    float: right;
+    margin-left: 0.425rem;
+}
+
+.master-hotel-table {
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar{
+        display:none;
+    }
+}

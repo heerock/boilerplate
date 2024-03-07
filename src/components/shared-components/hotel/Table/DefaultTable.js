@@ -45,20 +45,24 @@ const DefaultTable = (props) => {
                     {
                         props.rowSelection ?
                         <StyleTable
+                            className={props.className || ''}
                             bordered={props.bordered || false}
                             columns={columns}
                             dataSource={data}
                             pagination={false}
                             rowKey={props.rowKey || 'key'}
+                            style={{...props.style}}
                             rowSelection={props.rowSelection}
                             rowClassName={props?.rowClassName}
                         /> :
                         <StyleTable
+                            className={props.className || ''}
                             bordered={props.bordered || false}
                             rowClassName={props?.rowClassName}
                             columns={columns}
                             dataSource={data}
                             pagination={false}
+                            style={{...props.style}}
                             rowKey={props.rowKey || 'key'}
                         />
                     }

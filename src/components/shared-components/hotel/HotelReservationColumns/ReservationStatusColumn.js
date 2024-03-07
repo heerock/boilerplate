@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment/moment';
 import { Col, Row, Typography } from 'antd';
 import styled from 'styled-components';
 import AffiliatesBadgeDiv from '../Div/AffiliatesBadgeDiv';
@@ -12,19 +13,36 @@ import OverSeasValidateBadgeDiv from "../Div/OverSeasValidateBadgeDiv";
 const { Text } = Typography;
 
 const ReservationStatusColumn = (props) => {
+
+    const { reservationHotel, reservationCar } = props;
+
+    if (reservationHotel && reservationCar) {
+
+    }
+
     return (
         <>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <Row gutter={[0, 4]}>
                     {/*<TypeBadgeDiv type={'SELF_SALE'}/>*/}
-                    <OverSeasValidateBadgeDiv status={'DOMESTIC'} style={{ float: 'left' }}/>
-                    {props.isPackage && <PackageBadgeDiv style={{ float: 'left' }} />}
-                    <ReservationBadgeDiv style={{ float: 'left' }} status={props.status}/>
+                    <Row gutter={[4, 4]} style={{ margin: '0 auto'}}>
+                        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                            <OverSeasValidateBadgeDiv status={props.isDomestic ? 'DOMESTIC' : 'OVERSEAS'} />
+                        </Col>
+                        {props.isPackage &&
+                            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                                <PackageBadgeDiv />
+                            </Col>
+                        }
+                    </Row>
+                    {/*<ReservationBadgeDiv style={{ float: 'left' }} status={props.status}/>*/}
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                         <Text style={{ fontSize: '0.825rem', margin: '0 auto', fontWeight: 'bold' }}>{props.reservationNumber}</Text>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                        {props.paymentDateTime}
+                        {
+                            moment(props.paymentDate).add(9, 'hours').format('YYYY-MM-DD HH:mm:ss')
+                        }
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                         <DefaultButton

@@ -41,6 +41,7 @@ const SettingMasterHotelTable = (props) => {
                         <HotelNumberColumn
                             channel={record.masterSystem}
                             hotelCode={record.code}
+                            record={record}
                             onClick={() => detailViewOnClick(record)}
                         />
                     </>

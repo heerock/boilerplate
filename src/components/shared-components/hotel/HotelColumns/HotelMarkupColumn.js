@@ -18,6 +18,18 @@ const HotelMarkupColumn = (props) => {
         props.onClick(record, rate)
     }
 
+    useEffect(() => {
+        if ('markupRate' in record) {
+            setRate(record.markupRate)
+        }
+    }, [record.markupRate])
+
+    useEffect(() => {
+        if ('rate' in record) {
+            setRate(record.rate)
+        }
+    }, [record.rate])
+
     return (
         <>
             <Col>

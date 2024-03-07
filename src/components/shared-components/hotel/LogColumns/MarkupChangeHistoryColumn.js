@@ -14,6 +14,7 @@ const MarkupChangeHistoryColumn = (props) => {
                 setValue(`마크업 변경 ${props.record.beforeMarkupRate}% → ${props.record.afterMarkupRate}%`)
                 break;
             case 'HOTEL_BY_SUPPLIER':
+                setValue(`마크업 변경 ${props.record.beforeMarkupRate}% → ${props.record.afterMarkupRate}%`)
                 break;
             default:
                 break;

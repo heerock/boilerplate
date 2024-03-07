@@ -21,7 +21,8 @@ export const StyleBadgeDiv = styled.div`
   background: ${(props) => props.color};
   color: #FFF;
   font-size: 0.725rem;
-  width: auto;
+  width: 5rem;
+  font-weight: bold;
   padding: 0.1rem 0.325rem;
   margin: 0 auto;
   border-radius: 5px;

@@ -57,6 +57,7 @@ const MarkupList = () => {
     }
 
     const onClickRefresh = async (record, rate) => {
+        setLoading(true);
         const { success } = await VendorService.updatedMarkupVendorSystem({ record, rate })
 
         if (success) {
@@ -69,6 +70,18 @@ const MarkupList = () => {
 
         if (success) {
             setVendorSystems(supplierMarkups);
+
+            let set_params = {
+                page: 1,
+                pageSize: params.pageSize,
+            };
+
+            if (vendorSystem) {
+                set_params = { ...set_params, supplierSystem: vendorSystem }
+            }
+
+            setParams(set_params)
+            setLoading(false);
         }
     }
 
@@ -229,6 +242,7 @@ const MarkupList = () => {
                 </Row>
             </Spin>
             <HotelVendorSystemMarkupModal
+                loading={loading}
                 vendorSystems={vendorSystems}
                 isModalOpen={isVendorSystemMarkupModalOpen}
                 setIsModalOpen={setIsVendorSystemMarkupModalOpen}

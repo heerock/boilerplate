@@ -12,16 +12,18 @@ import ReservationHotelInformationColumn
     from '../../../../../components/shared-components/hotel/HotelReservationColumns/ReservationHotelInformationColumn';
 import ReservationPaymentColumn
     from '../../../../../components/shared-components/hotel/HotelReservationColumns/ReservationPaymentColumn';
+import ReservationCarInformationColumn
+    from "../../../../../components/shared-components/hotel/HotelReservationColumns/ReservationCarInformationColumn";
 
 const ReservationListTable = (props) => {
     const history = useHistory();
     const [data, setData] = useState([]);
-    const [column, setColumn] = useState([
+    const [columns, setColumns] = useState([
         {
             title: '예약번호',
             dataIndex: 'reservationId',
             align: 'center',
-            width: '10%',
+            width: '12%',
             render: (id, record) => {
                 return (
                     <>
@@ -64,6 +66,7 @@ const ReservationListTable = (props) => {
             render: (_, record) => {
                 return (
                     <>
+                        <ReservationCarInformationColumn {...record} />
                         {/*<Text style={{margin: '0 auto'}}>{record.paymentPrice.toLocaleString('ko-KR')} 원</Text>*/}
                     </>
                 )
@@ -94,7 +97,19 @@ const ReservationListTable = (props) => {
 	return (
 		<>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                <DefaultTable bordered={true} pagination={true} totalCount={data.length} columns={column} data={data} />
+                <DefaultTable
+                    rowKey={'id'}
+                    totalCount={props.pagination ? Number(props.pagination.totalElements) : 0}
+                    totalPages={props.pagination ? Number(props.pagination.totalPages) : 1}
+                    page={props.page}
+                    pageSize={props.pageSize}
+                    pagination={true}
+                    onChange={props.onChange}
+                    bordered={true}
+                    columns={columns}
+                    data={data}
+                    // style={{ width: `100%`}}
+                />
             </Col>
 		</>
 	)

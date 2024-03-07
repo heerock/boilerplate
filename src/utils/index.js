@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class Utils {
 
 	/**
@@ -8,6 +10,39 @@ class Utils {
 	static getNameInitial(name) {
 		let initials = name.match(/\b\w/g) || [];
 		return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+	}
+
+	static getDateTimeKr(date) {
+		return moment(date).add(9, 'hours').format('YYYY-MM-DD HH:mm:ss')
+	}
+
+	static getPaymentType(type) {
+		switch (type) {
+			case 'TOSS_PAYMENTS_TOSS_PAY':
+				return '토스페이'
+			case 'TOSS_PAYMENTS_BANK_TRANSFER':
+				return '계좌이체'
+			case 'TOSS_PAYMENTS_CARD':
+				return '카드'
+			case 'TOSS_PAYMENTS_BILLING_CARD':
+				return '간편카드'
+			case 'TOSS_PAYMENTS_KAKAO_PAY':
+				return '카카오페이'
+			case 'NAVERPAY':
+				return '네이버페이'
+			default:
+				return '기타';
+		}
+	}
+
+	static getReservationCarStatus(status) {
+		switch (status) {
+			case 'WAIT_FOR_RESERVE':
+			case 'RESERVED':
+				return 'BEFORE_CONFIRMED';
+			default:
+				return status;
+		}
 	}
 
 	/**

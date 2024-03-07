@@ -54,7 +54,7 @@ const HotelVendorSystemMarkupModal = (props) => {
                         top: '50%',
                         transform: 'translate(-50%, -50%)',
                     }}
-                    spinning={loading}
+                    spinning={props.loading}
                     tip={'로딩중..'}
                     indicator={
                         <LoadingOutlined

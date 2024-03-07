@@ -95,6 +95,7 @@ const MasterHotelTable = (props) => {
                                 onConfirm={() => props.onClick(record.id, props.selectedVendorHotelKey, 'insert')}
                                 okText="확인"
                                 cancelText="취소"
+                                cancelButtonProps={{ className:'popconfirmCancelBtn' }}
                             >
 
                             <DefaultButton
@@ -135,6 +136,7 @@ const MasterHotelTable = (props) => {
                         onConfirm={() => props.onClick(record.id, vendorHotel, 'insert')}
                         okText="확인"
                         cancelText="취소"
+                        cancelButtonProps={{ className:'popconfirmCancelBtn' }}
                     >
 
                         <DefaultButton
@@ -176,6 +178,7 @@ const MasterHotelTable = (props) => {
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <Row>
                     <DefaultTable
+                        className={'master-hotel-table'}
                         page={props.page}
                         pageSize={props.pageSize}
                         totalCount={props.pagination ? Number(props.pagination.totalElements) : 0}
@@ -186,7 +189,7 @@ const MasterHotelTable = (props) => {
                         rowKey={'id'}
                         rowClassName={rowClassName}
                         data={data && data}
-                        style={{ width: `100%`}}
+                        style={data.length > 4 ? { width: `100%`, height: '74vh', overflowY: 'scroll' } : { width: '100%'}}
                     />
                 </Row>
             </Col>

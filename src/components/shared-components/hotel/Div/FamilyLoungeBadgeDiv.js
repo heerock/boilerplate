@@ -6,7 +6,10 @@ const { Text } = Typography;
 
 const FamilyLoungeBadgeDiv = (props) => {
     const status = {
-        NONE: { color: '#F3F3F3', text: '등급없음' },
+        NO_GRADE: { color: '#F3F3F3', text: '등급없음' },
+        ROYAL_BLUE: { color: '#F3F3F3', text: '로얄 블루' },
+        BLUE: { color: '#F3F3F3', text: '블루' },
+        SHY_BLUE: { color: '#F3F3F3', text: '샤이 블루' },
     }
     return (
         <>

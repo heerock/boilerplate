@@ -5,7 +5,7 @@ import { ADMIN_HOST, HOTEL_HOST } from '../configs/HostConfig';
 
 const service = axios.create({
   baseURL: HOTEL_HOST,
-  timeout: 10000
+  timeout: 20000
 })
 
 // Config
