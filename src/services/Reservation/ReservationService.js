@@ -8,4 +8,10 @@ ReservationService.findReservationList = async (params) => {
     return await axios.get(host, { params });
 }
 
+ReservationService.findReservationDetail = async (id) => {
+    const host = `${HOTEL_HOST}/admin/reservations/${encodeURIComponent(id)}`;
+
+    return await axios.get(host);
+}
+
 export default ReservationService

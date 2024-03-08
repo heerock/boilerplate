@@ -17,10 +17,6 @@ const ReservationList = () => {
     const [reservations, setReservations] = useState([]);
     const [pagination, setPagination] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [params, setParams] = useState({
-        page: 1,
-        pageSize: 10,
-    });
     const [searchRegion, setSearchRegion] = useState('ALL');
     const [isPackage, setIsPackage] = useState(false);
     const [customerIssueExist, setCustomerIssueExist] = useState(false);
@@ -37,7 +33,11 @@ const ReservationList = () => {
         { label: '예약자명', value: 'BOOKER_NAME' },
         { label: '호텔명', value: 'HOTEL_NAME' },
     ]);
-
+    const [params, setParams] = useState({
+        page: 1,
+        pageSize: 10,
+        searchRegion: searchRegion,
+    });
 
     const getFetch = async (params) => {
         const { success, reservations, pagination } = await getReservationList(params)

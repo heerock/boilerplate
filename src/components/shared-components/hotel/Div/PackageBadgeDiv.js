@@ -22,6 +22,7 @@ export const StyleBadgeDiv = styled.div`
   color: #FFF;
   font-size: 0.725rem;
   width: 5rem;
+  height: 1.2rem;
   font-weight: bold;
   padding: 0.1rem 0.325rem;
   margin: 0 auto;

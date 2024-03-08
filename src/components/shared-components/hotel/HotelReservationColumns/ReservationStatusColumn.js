@@ -9,6 +9,7 @@ import TypeBadgeDiv from "../Div/TypeBadgeDiv";
 import ReservationBadgeDiv from "../Div/ReservationBadgeDiv";
 import PackageBadgeDiv from "../Div/PackageBadgeDiv";
 import OverSeasValidateBadgeDiv from "../Div/OverSeasValidateBadgeDiv";
+import ReservationFullStatusBadgeDiv from "../Div/ReservationFullStatusBadgeDiv";
 
 const { Text } = Typography;
 
@@ -34,15 +35,21 @@ const ReservationStatusColumn = (props) => {
                                 <PackageBadgeDiv />
                             </Col>
                         }
+                        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                            <ReservationFullStatusBadgeDiv status={props.fullStatus} />
+                        </Col>
+
                     </Row>
                     {/*<ReservationBadgeDiv style={{ float: 'left' }} status={props.status}/>*/}
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                         <Text style={{ fontSize: '0.825rem', margin: '0 auto', fontWeight: 'bold' }}>{props.reservationNumber}</Text>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                        <Text style={{ fontSize: '0.745rem' }}>
                         {
                             moment(props.paymentDate).add(9, 'hours').format('YYYY-MM-DD HH:mm:ss')
                         }
+                        </Text>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                         <DefaultButton
@@ -52,7 +59,7 @@ const ReservationStatusColumn = (props) => {
                                 // background: '#FFF',
                                 backgroundImage: 'linear-gradient(to bottom, #fff 0%, #e0e0e0 100%)'
                             }}
-                            onClick={() => props.onClick(props.reservationNumber)}
+                            onClick={() => props.onClick(props.id)}
                             prefixIcons={<SelectOutlined />}
                             color={'#000'}
                             text={'상세보기'}

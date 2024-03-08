@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Col, Row, Typography } from 'antd';
 import PageHeader from 'components/shared-components/PageHeader/PageHeader';
+import ReservationService from "../../../../../services/Reservation/ReservationService";
 
 const { Text } = Typography;
 
 const ReservationDetail = () => {
+	const [loading, setLoading] = useState(false);
     const { reservationId } = useParams();
+
+
+	const getFetch = async (id) => {
+		const response = await getReservationDetail(id);
+
+		console.log('response : ', response)
+
+	}
+
+	const getReservationDetail = async (id) => {
+		return await ReservationService.findReservationDetail(id);
+	}
+
+	useEffect(() => {
+		setLoading(true)
+
+		Promise.allSettled([getFetch(reservationId)]).then(() => setLoading(false))
+	}, [])
 
 	return (
 		<>
