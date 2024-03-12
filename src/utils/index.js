@@ -7,6 +7,47 @@ class Utils {
 	 * @param {String} name - Username
 	 * @return {String} 2 characters string
 	 */
+
+	static isGlobalType(key) {
+		const prefix = key.substring(0, 2);
+		const API_TYPE = ['KL', 'BG', 'SC', 'HG'];
+
+		if (API_TYPE.includes(prefix)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	static getFuelTypeChange(type) {
+		switch (type) {
+			case 1:
+				return '휘발유';
+			case 2:
+				return '경유';
+			case 3:
+				return '전기';
+			case 4:
+				return '하이브리드';
+			default:
+				return '';
+		}
+	}
+	static getCdwTypeChange(type) {
+		switch (type) {
+			case '0':
+				return '자차';
+			case '1':
+				return '일반자차';
+			case '2':
+				return '고급자차';
+			case '3':
+				return '슈퍼자차';
+			default:
+				return type;
+		}
+	}
+
 	static getNameInitial(name) {
 		let initials = name.match(/\b\w/g) || [];
 		return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
@@ -14,6 +55,10 @@ class Utils {
 
 	static getDateTimeKr(date) {
 		return moment(date).add(9, 'hours').format('YYYY-MM-DD HH:mm:ss')
+	}
+
+	static getDateFormat(date) {
+		return moment(date).format('YYYY-MM-DD HH:mm:ss')
 	}
 
 	static getPaymentType(type) {
@@ -42,6 +87,25 @@ class Utils {
 				return 'BEFORE_CONFIRMED';
 			default:
 				return status;
+		}
+	}
+
+	static getReservationSpecialRequestType(type) {
+		switch (type) {
+			case 'NON_SMOKING_ROOM':
+				return '금연 객실';
+			case 'SMOKING_ROOM':
+				return '흡연 객실';
+			case 'LATE_CHECK_IN':
+				return '늦은 체크인';
+			case 'BED_ONE':
+				return '침대 1개';
+			case 'BED_TWO':
+				return '침대 2개';
+			case 'HIGHER_FLOOR':
+				return '고층 객실';
+			default:
+				return '기타'
 		}
 	}
 

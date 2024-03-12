@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const DefaultDivider = (props) => {
     return (
         <>
-            <StyleDivider />
+            <StyleDivider style={{ ...props?.style }}/>
         </>
     )
 }

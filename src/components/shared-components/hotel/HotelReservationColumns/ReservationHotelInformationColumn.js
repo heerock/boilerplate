@@ -37,7 +37,7 @@ const ReservationHotelInformationColumn = (props) => {
                         <Text style={{ float: 'left', fontWeight: 'bold', fontSize: '0.785rem', marginRight: '0.255rem' }}>{reservationHotel.adultCount + reservationHotel.childCount}명</Text>
                         <Text style={{ float: 'left', fontSize: '0.765rem' }}>성인 {reservationHotel.adultCount}명</Text>
                         <Text style={{ float: 'left', fontSize: '0.765rem' }}>·</Text>
-                        <Text style={{ float: 'left', fontSize: '0.765rem' }}>어린이 {reservationHotel.adultCount}명</Text>
+                        <Text style={{ float: 'left', fontSize: '0.765rem' }}>어린이 {reservationHotel.childCount}명</Text>
                     </Col>
                 </Row>
             </Col>

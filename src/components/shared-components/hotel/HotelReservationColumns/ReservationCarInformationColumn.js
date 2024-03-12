@@ -40,8 +40,8 @@ const ReservationCarInformationColumn = (props) => {
                             </Col>
                         </Row>
                         <DefaultDivider />
-                        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ display: 'flex', alignItems: 'center', height: '7.3rem' }}>
-                        {/*    <Text style={{ float: 'left', fontWeight: 'bold', fontSize: '0.9rem' }}>{reservationHotel.checkInDate} ~ {reservationHotel.checkOutDate}</Text>*/}
+                        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ display: 'inline-flex', alignItems: 'center', height: '7.3rem' }}>
+                            <Text style={{ float: 'left', fontWeight: 'bold', fontSize: '0.785rem' }}>{Utils.getDateFormat(reservationCar?.pickupDateTime)} ~ {Utils.getDateFormat(reservationCar?.returnDateTime)}</Text>
                         </Col>
                     </Row>
                 </Col>

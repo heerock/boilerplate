@@ -24,10 +24,10 @@ MasterService.findHotelDetail = async (record) => {
     const host = `${HOTEL_HOST}/admin/hotels/${record.id}`;
 
     let params = {
-        sourceSystem: record.masterSystem,
+        sourceSystem: record.masterSystem || record.sourceSystem,
     }
 
-    if ('mappedHotelId' in record && record.mappedHotelId && record.mappedHotelId.length > 0) {
+    if (record?.mappedHotelId && 'mappedHotelId' in record && record?.mappedHotelId.length > 0) {
         params = {
             ...params,
             mappedHotelId: record.mappedHotelId[0],
