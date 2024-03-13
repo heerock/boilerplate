@@ -12,7 +12,7 @@ import Utils from "../../../../../../utils";
 const { Title, Text } = Typography;
 
 const ReservationPaymentInformation = (props) => {
-    const { record, carInfo } = props;
+    const { record, carInfo, isGlobalApi } = props;
     return (
         <>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
@@ -25,7 +25,7 @@ const ReservationPaymentInformation = (props) => {
                     <Row>
                         <Text style={{ fontSize: '0.845rem', fontWeight: 'bold' }}>
                             {/*{props?.payment.payment.toLocaleString('ko-KR')}원*/}
-                            {props?.isPackage ? (record?.reservationHotel.payment.paymentAmount + record?.reservationCar.payment.paymentAmount).toLocaleString('ko-KR') : record?.reservationHotel.payment.paymentAmount.toLocaleString('ko-KR')}원
+                            {record?.isPackage ? (record?.reservationHotel.payment.paymentAmount + record?.reservationCar.payment.paymentAmount).toLocaleString('ko-KR') : record?.reservationHotel.payment.paymentAmount.toLocaleString('ko-KR')}원
                         </Text>
                     </Row>
                     <Row>
@@ -94,56 +94,101 @@ const ReservationPaymentInformation = (props) => {
                     </Row>
 
                     <DefaultDivider />
-                    <Row gutter={[8, 0]} style={{ display: 'grid' }}>
-                        <Row>
-                            <Title level={5} style={{ fontWeight: 'bold', fontSize: '0.805rem' }}>렌트카 결제정보</Title>
-                        </Row>
-                        <Row>
-                            <Text style={{ fontSize: '0.785rem' }}>
-                                • 결제금액 : {carInfo?.car.reservList[0].payment.toLocaleString('ko-KR')}원
-                            </Text>
-                        </Row>
-                        <Row>
-                            <Text style={{ fontSize: '0.785rem' }}>
-                                • 원금 : {carInfo?.car.reservList[0].principal.toLocaleString('ko-KR')}원
-                            </Text>
-                        </Row>
-                        <Row>
-                            <Text style={{ fontSize: '0.785rem' }}>
-                                • 보험료 : {carInfo?.car.reservList[0].cdwCost.toLocaleString('ko-KR')}원
-                            </Text>
-                        </Row>
-                        <Row>
-                            <Text style={{ fontSize: '0.785rem' }}>
-                                • 대여료 : {carInfo?.car && Number(carInfo?.car.reservList[0].rentalCost).toLocaleString('ko-KR')}원
-                            </Text>
-                        </Row>
-                        <Row>
-                            <Text style={{ fontSize: '0.785rem' }}>
-                                • 쿠폰 : {carInfo?.car && Number(carInfo?.car.reservList[0].useCouponValue).toLocaleString('ko-KR')}원
-                            </Text>
-                        </Row>
-                        <Row>
-                            <Text style={{ fontSize: '0.785rem' }}>
-                                • 포인트 : {carInfo?.car && Number(carInfo?.car.reservList[0].usePoint).toLocaleString('ko-KR')}원
-                            </Text>
-                        </Row>
 
-                        <Row>
-                            <Text style={{ fontSize: '0.785rem' }}>
-                                • 배송비용 : {carInfo?.car && Number(carInfo?.car.reservList[0].delivCost).toLocaleString('ko-KR')}원
-                            </Text>
-                        </Row>
-                        {
-                            carInfo?.reservation.cdwAddon &&
+                    { isGlobalApi
+                    ?
+                        <Row gutter={[8, 0]} style={{ display: 'grid' }}>
+                            <Row>
+                                <Title level={5} style={{ fontWeight: 'bold', fontSize: '0.805rem' }}>렌트카 결제정보</Title>
+                            </Row>
                             <Row>
                                 <Text style={{ fontSize: '0.785rem' }}>
-                                    • 자차플러스 : {carInfo?.reservation.cdwAddon && Number(carInfo?.reservation.cdwAddon.price).toLocaleString('ko-KR')}원
+                                    • 결제금액 : {carInfo?.reservation && carInfo?.reservation?.paymentAmount && carInfo?.reservation?.paymentAmount.toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 원금 : {carInfo?.reservation && carInfo?.reservation?.principalAmount && carInfo?.reservation?.principalAmount.toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 쿠폰 : {carInfo?.reservation && Number(carInfo?.reservation.useCouponAmount).toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 포인트 : {carInfo?.reservation && Number(carInfo?.reservation.usePointAmount).toLocaleString('ko-KR')}원
                                 </Text>
                             </Row>
 
-                        }
-                    </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 현장결제 : 약 {carInfo?.reservation && carInfo?.reservation?.payOnArrival.price.toLocaleString('ko-KR')}원 ({ carInfo?.reservation && Number(carInfo?.reservation?.payOnArrival.localPrice)} {carInfo?.reservation.payOnArrival.currency})
+                                </Text>
+                            </Row>
+                            {
+                                carInfo?.reservation?.cdwAddon &&
+                                <Row>
+                                    <Text style={{ fontSize: '0.785rem' }}>
+                                        • 자차플러스 : {carInfo?.reservation?.cdwAddon && Number(carInfo?.reservation.cdwAddon.price).toLocaleString('ko-KR')}원
+                                    </Text>
+                                </Row>
+
+                            }
+                        </Row>
+                    :
+                        <Row gutter={[8, 0]} style={{ display: 'grid' }}>
+                            <Row>
+                                <Title level={5} style={{ fontWeight: 'bold', fontSize: '0.805rem' }}>렌트카 결제정보</Title>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 결제금액 : {carInfo?.car?.reservList && carInfo?.car?.reservList[0]?.payment.toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 원금 : {carInfo?.car?.reservList && carInfo?.car?.reservList[0]?.principal.toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 보험료 : {carInfo?.car?.reservList && carInfo?.car?.reservList[0]?.cdwCost.toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 대여료 : {carInfo?.car?.reservList && Number(carInfo?.car.reservList[0].rentalCost).toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 쿠폰 : {carInfo?.car?.reservList && Number(carInfo?.car.reservList[0].useCouponValue).toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 포인트 : {carInfo?.car?.reservList && Number(carInfo?.car.reservList[0].usePoint).toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+
+                            <Row>
+                                <Text style={{ fontSize: '0.785rem' }}>
+                                    • 배송비용 : {carInfo?.car?.reservList && Number(carInfo?.car.reservList[0].delivCost).toLocaleString('ko-KR')}원
+                                </Text>
+                            </Row>
+                            {
+                                carInfo?.reservation?.cdwAddon &&
+                                <Row>
+                                    <Text style={{ fontSize: '0.785rem' }}>
+                                        • 자차플러스 : {carInfo?.reservation?.cdwAddon && Number(carInfo?.reservation.cdwAddon.price).toLocaleString('ko-KR')}원
+                                    </Text>
+                                </Row>
+
+                            }
+                        </Row>
+                    }
 
                     <DefaultDivider />
                     <Row>

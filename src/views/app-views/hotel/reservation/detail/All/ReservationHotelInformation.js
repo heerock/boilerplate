@@ -67,6 +67,9 @@ const ReservationHotelInformation = (props) => {
                             }
                         </Text>
                     </Row>
+                    <Row gutter={[8, 8]} style={{ display: 'inline-flex' }}>
+                        <AffiliatesBadgeDiv channel={record?.reservationHotel.roomSourceSystem}/>
+                    </Row>
                     <Row>
                         <Text style={{ float: 'left', fontSize: '0.805rem' }}>{record?.reservationHotel.roomName}</Text>
                     </Row>

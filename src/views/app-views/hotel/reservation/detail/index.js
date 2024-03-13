@@ -25,6 +25,7 @@ const ReservationDetail = () => {
 	const [car, setCar] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedDetailRecord, setSelectedDetailRecord] = useState(null);
+	const [isGlobalApi, setIsGlobalApi] = useState(false);
 
 	const onChange = (key) => {
 		setSelectedKey(key);
@@ -33,6 +34,7 @@ const ReservationDetail = () => {
 	const getFetch = async (id) => {
 		const response = await getReservationDetail(id);
 		let isGlobalApi = false;
+		setIsGlobalApi(false);
 
 		if (!response.success) {
 			return
@@ -57,6 +59,7 @@ const ReservationDetail = () => {
 
 			if (Utils.isGlobalType(response.reservationCar.carReservationNumber)) {
 				isGlobalApi = true;
+				setIsGlobalApi(true);
 			}
 
 			const { result } = await getReservationCarDetail(response.reservationCar.carReservationKey, isGlobalApi);
@@ -65,11 +68,17 @@ const ReservationDetail = () => {
 				for (const [key, value] of Object.entries(result)) {
 					if (value) {
 						if (key === 'GLOBAL') {
-
+							setCar({
+								type: key,
+								car: value.result.car,
+								shop: value.result.shop,
+								reservation: value.result.reservation,
+							})
 						} else {
 							setCar({
 								type: key,
 								car: value.information,
+								shop: value.store,
 								reservation: value.reservation,
 							})
 						}
@@ -91,6 +100,24 @@ const ReservationDetail = () => {
 		setSelectedDetailRecord(record)
 		setIsModalOpen(!isModalOpen)
 	}
+
+	const customerIssuedSave = async (memo) => {
+		if (reservationId) {
+			const response = await setReservationIssuedSave(reservationId, memo);
+
+			if (!'success' in response) {
+				return;
+			}
+
+			setLoading(true)
+			Promise.allSettled([getFetch(reservationId)]).then(() => setLoading(false))
+		}
+	}
+
+	const setReservationIssuedSave = async (id, issueMemo) => {
+		return await ReservationService.customerIssueSave(id, issueMemo);
+	}
+
 
 	useEffect(() => {
 		setLoading(true)
@@ -127,14 +154,21 @@ const ReservationDetail = () => {
 								/>
 
 								{
-									selectedKey === 'ALL' ? <ReservationDetailAll record={reservation} carInfo={car}/> :
-										selectedKey === 'HOTEL' ? <ReservationDetailHotel record={reservation} onClick={detailViewOnClick}/> : <ReservationDetailCar record={car} />
+									selectedKey === 'ALL' ? <ReservationDetailAll record={reservation} carInfo={car} isGlobalApi={isGlobalApi}/> :
+										selectedKey === 'HOTEL' ?
+											<ReservationDetailHotel record={reservation} onClick={detailViewOnClick}/>
+											:
+											<ReservationDetailCar
+												record={car}
+												carInfo={car}
+												isGlobalApi={isGlobalApi}
+											/>
 								}
 
 								{
 									selectedKey === 'ALL' &&
 									<>
-										<ReservationManage />
+										<ReservationManage record={reservation} customerIssuedSave={customerIssuedSave} />
 									</>
 								}
 							</Spin>

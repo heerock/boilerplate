@@ -23,4 +23,12 @@ ReservationService.findReservationDetailCar = async (id, isGlobalApi) => {
     }});
 }
 
+ReservationService.customerIssueSave = async (id, issueMemo) => {
+    const host = `${HOTEL_HOST}/admin/reservation/${encodeURIComponent(id)}/customer-issue`;
+
+    return await axios.post(host, {
+        issueMemo: issueMemo,
+    });
+}
+
 export default ReservationService

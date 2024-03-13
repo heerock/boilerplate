@@ -36,9 +36,13 @@ const ReservationUserInformationColumn = (props) => {
                     </Col>
                     <DefaultDivider />
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ height: '5.3rem' }}>
-                        <Text style={{ fontSize: '0.825rem', fontWeight: 'bold' }}>고객 이슈</Text>
+                        <Row>
+                            <Text style={{ fontSize: '0.825rem', fontWeight: 'bold' }}>고객 이슈</Text>
+                        </Row>
+                        <Row>
+                            <Text style={{ fontSize: '0.825rem' }}>{props.customerIssue}</Text>
+                        </Row>
                     </Col>
-                    <Text style={{ fontSize: '0.825rem' }}>{props.customerIssue}</Text>
                     {/*<DefaultDivider />*/}
                     {/*<Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>*/}
                     {/*    <Text style={{ fontSize: '0.825rem', fontWeight: '600' }}>{reservationHotel.booker.phoneNumber}</Text>*/}

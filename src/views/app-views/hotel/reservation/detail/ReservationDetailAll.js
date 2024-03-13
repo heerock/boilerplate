@@ -34,17 +34,17 @@ const ReservationDetailAll = (props) => {
                                     {
                                         props.record?.reservationHotel &&
                                         <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
-                                                <ReservationHotelInformation record={props.record}/>
+                                            <ReservationHotelInformation record={props.record}/>
                                         </Col>
                                     }
                                     {
                                         props.record?.reservationCar &&
                                         <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
-                                                <ReservationCarInformation record={props.record} carInfo={props.carInfo} />
+                                            <ReservationCarInformation record={props.record} carInfo={props.carInfo} isGlobalApi={props.isGlobalApi} />
                                         </Col>
                                     }
                                     <Col xs={6} sm={6} md={6} lg={6} xl={6} xxl={6}>
-                                        <ReservationPaymentInformation record={props.record} carInfo={props.carInfo} />
+                                        <ReservationPaymentInformation record={props.record} carInfo={props.carInfo} isGlobalApi={props.isGlobalApi} />
                                     </Col>
                                 </Row>
 
@@ -76,8 +76,8 @@ export const StyleCard = styled(Card)`
   }
   
   .ant-card-body {
-    height: 50vh;
-    overflow: hidden;
-    overflow-y: scroll;
+    //height: 50vh;
+    //overflow: hidden;
+    //overflow-y: scroll;
   }
 `

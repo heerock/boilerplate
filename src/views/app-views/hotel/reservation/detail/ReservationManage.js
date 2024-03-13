@@ -3,11 +3,17 @@ import { useParams } from 'react-router-dom';
 import {Col, Row, Typography, Spin, Tabs, Descriptions} from 'antd';
 import styled from "styled-components";
 import DefaultButton from "../../../../../components/shared-components/hotel/Button/DefaultButton";
+import CustomerIssueModal from "../modal/CustomerIssueModal";
 
 
 const { Text } = Typography;
 
-const ReservationManage = () => {
+const ReservationManage = (props) => {
+    const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
+    const onClickIssue = () => {
+        setIsIssueModalOpen(true);
+    }
+
     return (
         <>
             <Row>
@@ -24,7 +30,10 @@ const ReservationManage = () => {
                                         text={'예약 취소'}
                                         style={{ background: '#D9534F', marginRight: '0.225rem' }}
                                     />
-                                    <DefaultButton text={'고객 이슈 입력'}/>
+                                    <DefaultButton
+                                        text={'고객 이슈 입력'}
+                                        onClick={onClickIssue}
+                                    />
                                 </Row>
                             </StyleDescriptions.Item>
 
@@ -59,6 +68,12 @@ const ReservationManage = () => {
                     </Row>
                 </Col>
             </Row>
+            <CustomerIssueModal
+                isModalOpen={isIssueModalOpen}
+                setModalOpen={setIsIssueModalOpen}
+                customerIssue={props?.record?.customerIssue}
+                customerIssuedSave={props.customerIssuedSave}
+            />
         </>
     )
 }
